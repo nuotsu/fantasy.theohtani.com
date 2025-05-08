@@ -1,11 +1,11 @@
 {
 	"name": "fantasy.theohtani.com",
-	"version": "0.1.0",
+	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
 		"dev:turbopack": "next dev --turbopack",
-		"ngrok": "ngrok http --url=helpful-mostly-lionfish.ngrok-free.app 3000",
+		"ngrok": "ngrok http --url=picked-condor-severely.ngrok-free.app 3000",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
