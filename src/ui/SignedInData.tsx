@@ -1,26 +1,44 @@
-import getToken from '@/lib/getToken'
+import { cn } from '@/lib/utils'
+import { getLeagues, getTeams } from '@/lib/yf'
 
 export default async function SignedInData() {
-	const token = await getToken()
+	const leagues = await getLeagues()
 
-	if (!token.access_token) return <div>No token</div>
-
-	const res = await fetch(
-		'https://fantasysports.yahooapis.com/fantasy/v2/users;use_login=1/games;game_keys=mlb/leagues?format=json',
-		{
-			headers: {
-				Authorization: `Bearer ${token.access_token}`,
-			},
-		},
+	return (
+		<div>
+			<h2>My Leagues:</h2>
+			<ul className="list-disc pl-4">
+				{leagues?.map((league: any) => (
+					<li key={league.league_key}>
+						<League league={league} />
+					</li>
+				))}
+			</ul>
+		</div>
 	)
+}
 
-	const data = await res.json()
+async function League({ league }: { league: any }) {
+	const teams = await getTeams(league.league_key)
+	const filteredTeams = Object.values(teams).filter((team: any) => isNaN(team))
 
-	const league =
-		data.fantasy_content.users['0'].user[1].games['0'].game[1].leagues['0']
-			.league[0]
+	return (
+		<div key={league.league_key}>
+			<h3 className="font-bold">{league.name}</h3>
+			<ul>
+				{filteredTeams.map((team: any) => {
+					const isOwner = team.team[0][3]?.is_owned_by_current_login
 
-	console.log(data, league)
-
-	return <div>My league name: {league.name}</div>
+					return (
+						<li
+							className={cn(isOwner && 'font-bold')}
+							key={team.team[0].team_key}
+						>
+							{team.team[0][2].name}
+						</li>
+					)
+				})}
+			</ul>
+		</div>
+	)
 }
