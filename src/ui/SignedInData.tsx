@@ -32,7 +32,7 @@ async function League({ league }: { league: any }) {
 					return (
 						<li
 							className={cn(isOwner && 'font-bold')}
-							key={team.team[0].team_key}
+							key={team.team[0][0].team_key}
 						>
 							{team.team[0][2].name}
 						</li>
