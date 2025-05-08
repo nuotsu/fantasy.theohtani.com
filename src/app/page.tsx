@@ -9,14 +9,7 @@ export default async function Home() {
 		<>
 			<h1>Fantasy Baseball</h1>
 
-			{token?.access_token ? (
-				<>
-					<p>Signed In</p>
-					<SignedInData />
-				</>
-			) : (
-				<SignInWithYahoo />
-			)}
+			{token?.access_token ? <SignedInData /> : <SignInWithYahoo />}
 		</>
 	)
 }

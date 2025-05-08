@@ -1,5 +1,5 @@
+import { getLeagues, getStandings } from '@/lib/yf'
 import { cn } from '@/lib/utils'
-import { getLeagues, getStandings, getTeams } from '@/lib/yf'
 
 export default async function SignedInData() {
 	const leagues = await getLeagues()
@@ -19,16 +19,14 @@ export default async function SignedInData() {
 }
 
 async function Leagues({ league }: { league: any }) {
-	const teams = await getTeams(league.league_key)
-	const filteredTeams = Object.values(teams).filter((team: any) => isNaN(team))
-
 	const standings = await getStandings(league.league_key)
+	const teams = Object.values(standings).filter((team: any) => isNaN(team))
 
 	return (
 		<div key={league.league_key}>
 			<h3 className="font-bold">{league.name}</h3>
-			<ul>
-				{filteredTeams.map((team: any) => {
+			<ol className="list-decimal pl-4">
+				{teams.map((team: any) => {
 					const t = team.team[0]
 					const isOwner = t[3]?.is_owned_by_current_login
 
@@ -38,7 +36,7 @@ async function Leagues({ league }: { league: any }) {
 						</li>
 					)
 				})}
-			</ul>
+			</ol>
 		</div>
 	)
 }

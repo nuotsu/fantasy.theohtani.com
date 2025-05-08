@@ -30,5 +30,5 @@ export async function getTeams(league_key: string) {
 
 export async function getStandings(league_key: string) {
 	const data = await yf(`/league/${league_key}/standings`)
-	return data.fantasy_content
+	return data.fantasy_content.league[1].standings[0].teams
 }

@@ -31,5 +31,5 @@ export async function GET({ url }: Request) {
 		maxAge: 60 * 60 * 24 * 7, // 7 days
 	})
 
-	return redirect('/')
+	return redirect('/auth/success')
 }
