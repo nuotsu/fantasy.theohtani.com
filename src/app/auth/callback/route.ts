@@ -24,12 +24,21 @@ export async function GET({ url }: Request) {
 
 	const cookieStore = await cookies()
 
-	cookieStore.set('token', JSON.stringify(data), {
-		httpOnly: true,
-		secure: !dev,
-		sameSite: 'strict',
-		maxAge: 60 * 60 * 24 * 7, // 7 days
-	})
+	console.log(data)
+
+	cookieStore.set(
+		'token',
+		JSON.stringify({
+			...data,
+			expires_at: new Date(Date.now() + data.expires_in * 1000).toISOString(),
+		}),
+		{
+			httpOnly: true,
+			secure: !dev,
+			sameSite: 'strict',
+			maxAge: data.expires_in,
+		},
+	)
 
 	return redirect('/auth/success')
 }

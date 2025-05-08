@@ -4,9 +4,11 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
 	const token = JSON.parse(request.cookies.get('token')?.value ?? 'null')
 
-	if (!token?.access_token) {
+	if (!token?.access_token || new Date(token.expires_at) > new Date()) {
 		return NextResponse.next()
 	}
+
+	console.log('refreshing token...')
 
 	const res = await fetch('https://api.login.yahoo.com/oauth2/get_token', {
 		method: 'POST',
@@ -27,12 +29,19 @@ export async function middleware(request: NextRequest) {
 
 	const response = NextResponse.next()
 
-	response.cookies.set('token', JSON.stringify(data), {
-		httpOnly: true,
-		secure: !dev,
-		sameSite: 'strict',
-		maxAge: 60 * 60 * 24 * 7, // 7 days
-	})
+	response.cookies.set(
+		'token',
+		JSON.stringify({
+			...data,
+			expires_at: new Date(Date.now() + data.expires_in * 1000).toISOString(),
+		}),
+		{
+			httpOnly: true,
+			secure: !dev,
+			sameSite: 'strict',
+			maxAge: data.expires_in,
+		},
+	)
 
 	return response
 }
