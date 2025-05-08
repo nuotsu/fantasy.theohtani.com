@@ -1,9 +1,12 @@
-import { cookies } from 'next/headers'
 import { BASE_URL, dev } from '@/lib/env'
-import { redirect } from 'next/navigation'
+import { NextResponse, type NextRequest } from 'next/server'
 
-export async function GET({ url }: Request) {
-	const code = new URL(url).searchParams.get('code')
+export async function middleware(request: NextRequest) {
+	const token = JSON.parse(request.cookies.get('token')?.value ?? 'null')
+
+	if (!token?.access_token) {
+		return NextResponse.next()
+	}
 
 	const res = await fetch('https://api.login.yahoo.com/oauth2/get_token', {
 		method: 'POST',
@@ -14,22 +17,26 @@ export async function GET({ url }: Request) {
 			).toString('base64')}`,
 		},
 		body: new URLSearchParams({
-			grant_type: 'authorization_code',
+			grant_type: 'refresh_token',
 			redirect_uri: `${BASE_URL}/auth/callback`,
-			code: code!,
+			refresh_token: token.refresh_token,
 		}),
 	})
 
 	const data = await res.json()
 
-	const cookieStore = await cookies()
+	const response = NextResponse.next()
 
-	cookieStore.set('token', JSON.stringify(data), {
+	response.cookies.set('token', JSON.stringify(data), {
 		httpOnly: true,
 		secure: !dev,
 		sameSite: 'strict',
 		maxAge: 60 * 60 * 24 * 7, // 7 days
 	})
 
-	return redirect('/')
+	return response
+}
+
+export const config = {
+	matcher: '/',
 }

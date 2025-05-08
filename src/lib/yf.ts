@@ -1,10 +1,10 @@
 import getToken from './getToken'
 
-export async function getLeagues() {
+export async function yf(endpoint: string) {
 	const token = await getToken()
 
 	const res = await fetch(
-		'https://fantasysports.yahooapis.com/fantasy/v2/users;use_login=1/games;game_keys=mlb/leagues?format=json',
+		`https://fantasysports.yahooapis.com/fantasy/v2${endpoint}?format=json`,
 		{
 			headers: {
 				Authorization: `Bearer ${token.access_token}`,
@@ -14,26 +14,21 @@ export async function getLeagues() {
 
 	const data = await res.json()
 
-	const leagues =
-		data.fantasy_content.users['0'].user[1].games['0'].game[1].leagues['0']
-			.league
+	return data
+}
 
-	return leagues
+export async function getLeagues() {
+	const data = await yf('/users;use_login=1/games;game_keys=mlb/leagues')
+	return data.fantasy_content.users['0'].user[1].games['0'].game[1].leagues['0']
+		.league
 }
 
 export async function getTeams(league_key: string) {
-	const token = await getToken()
-
-	const res = await fetch(
-		`https://fantasysports.yahooapis.com/fantasy/v2/league/${league_key}/teams?format=json`,
-		{
-			headers: {
-				Authorization: `Bearer ${token.access_token}`,
-			},
-		},
-	)
-
-	const data = await res.json()
-
+	const data = await yf(`/league/${league_key}/teams`)
 	return data.fantasy_content.league[1].teams
+}
+
+export async function getStandings(league_key: string) {
+	const data = await yf(`/league/${league_key}/standings`)
+	return data.fantasy_content
 }

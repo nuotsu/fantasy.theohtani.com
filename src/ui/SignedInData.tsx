@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { getLeagues, getTeams } from '@/lib/yf'
+import { getLeagues, getStandings, getTeams } from '@/lib/yf'
 
 export default async function SignedInData() {
 	const leagues = await getLeagues()
@@ -10,7 +10,7 @@ export default async function SignedInData() {
 			<ul className="list-disc pl-4">
 				{leagues?.map((league: any) => (
 					<li key={league.league_key}>
-						<League league={league} />
+						<Leagues league={league} />
 					</li>
 				))}
 			</ul>
@@ -18,23 +18,23 @@ export default async function SignedInData() {
 	)
 }
 
-async function League({ league }: { league: any }) {
+async function Leagues({ league }: { league: any }) {
 	const teams = await getTeams(league.league_key)
 	const filteredTeams = Object.values(teams).filter((team: any) => isNaN(team))
+
+	const standings = await getStandings(league.league_key)
 
 	return (
 		<div key={league.league_key}>
 			<h3 className="font-bold">{league.name}</h3>
 			<ul>
 				{filteredTeams.map((team: any) => {
-					const isOwner = team.team[0][3]?.is_owned_by_current_login
+					const t = team.team[0]
+					const isOwner = t[3]?.is_owned_by_current_login
 
 					return (
-						<li
-							className={cn(isOwner && 'font-bold')}
-							key={team.team[0][0].team_key}
-						>
-							{team.team[0][2].name}
+						<li className={cn(isOwner && 'font-bold')} key={t[0].team_key}>
+							{t[2].name}
 						</li>
 					)
 				})}
