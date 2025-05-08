@@ -9,6 +9,7 @@ const font_sans = Geist({
 export const metadata: Metadata = {
 	title: 'Fantasy Baseball',
 	description: 'Fantasy Baseball',
+	icons: 'https://fav.farm/🏆',
 }
 
 export default function RootLayout({

@@ -1,17 +1,22 @@
-import { cookies } from 'next/headers'
+import getToken from '@/lib/getToken'
+import SignedInData from '@/ui/SignedInData'
 import SignInWithYahoo from '@/ui/SignInWithYahoo'
 
 export default async function Home() {
-	const cookieStore = await cookies()
-	const token = cookieStore.get('token')
-
-	const parsedToken = JSON.parse(token?.value ?? '{}')
+	const token = await getToken()
 
 	return (
 		<>
 			<h1>Fantasy Baseball</h1>
 
-			{parsedToken ? <>Signed In</> : <SignInWithYahoo />}
+			{token ? (
+				<>
+					<p>Signed In</p>
+					<SignedInData />
+				</>
+			) : (
+				<SignInWithYahoo />
+			)}
 		</>
 	)
 }
