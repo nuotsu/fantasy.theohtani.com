@@ -17,12 +17,20 @@ export async function yf<T = any>(endpoint: string) {
 	return data as T
 }
 
-export async function getLeagues() {
+export async function getUsersGamesLeagues() {
 	const data = await yf<YF.Users>(
 		'/users;use_login=1/games;game_keys=mlb/leagues',
 	)
-	return data.fantasy_content.users['0'].user[1].games['0'].game[1].leagues['0']
-		.league
+
+	const users = data.fantasy_content.users
+	const games = users['0'].user[1].games
+	const leagues = games['0'].game[1].leagues['0'].league
+
+	return {
+		users,
+		games,
+		leagues,
+	}
 }
 
 export async function getTeams(league_key: string) {
@@ -39,6 +47,12 @@ export async function getScoreboard(league: YF.League) {
 	const data = await yf<YF.Scoreboard>(
 		`/league/${league.league_key}/scoreboard`,
 	)
-
 	return data.fantasy_content.league[1].scoreboard
+}
+
+export async function getStatCategories(game: YF.Game) {
+	const data = await yf<YF.StatCategories>(
+		`/game/${game.game_key}/stat_categories`,
+	)
+	return data.fantasy_content.game[1].stat_categories.stats
 }

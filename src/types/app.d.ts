@@ -26,20 +26,7 @@ declare global {
 					{
 						games: Plural<{
 							game: [
-								{
-									game_key: string
-									game_id: string
-									name: string
-									code: string
-									type: string
-									url: string
-									season: string
-									is_registration_over: 0 | 1
-									is_game_over: 0 | 1
-									is_offseason: 0 | 1
-									is_live_draft_lobby_active: 0 | 1
-									alternate_start_deadline: string // YYYY-MM-DD
-								},
+								Game,
 								{
 									leagues: Plural<{ league: [League] }>
 								},
@@ -83,6 +70,27 @@ declare global {
 			]
 		}>
 
+		type StatCategories = Response<{
+			game: [
+				Game,
+				{
+					stat_categories: {
+						stats: Array<{
+							stat: {
+								stat_id: number
+								name: string
+								display_name: string
+								sort_order: string // number
+								position_types: Array<{
+									position_type: string
+								}>
+							}
+						}>
+					}
+				},
+			]
+		}>
+
 		interface League {
 			league_key: string
 			league_id: string
@@ -111,6 +119,21 @@ declare global {
 			is_plus_league: string // number
 			game_code: string
 			season: string // number
+		}
+
+		interface Game {
+			game_key: string
+			game_id: string
+			name: string
+			code: string
+			type: string
+			url: string
+			season: string
+			is_registration_over: 0 | 1
+			is_game_over: 0 | 1
+			is_offseason: 0 | 1
+			is_live_draft_lobby_active: 0 | 1
+			alternate_start_deadline: string // YYYY-MM-DD
 		}
 
 		type TeamData = [
