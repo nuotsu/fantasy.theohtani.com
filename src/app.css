@@ -6,3 +6,8 @@
 	--color-bg: #fff;
 	--color-fg: #000;
 }
+
+@utility technical {
+	text-transform: uppercase;
+	letter-spacing: 0.1ch;
+}

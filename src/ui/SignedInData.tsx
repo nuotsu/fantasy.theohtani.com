@@ -5,16 +5,11 @@ export default async function SignedInData() {
 	const leagues = await getLeagues()
 
 	return (
-		<div>
-			<h2>My Leagues:</h2>
-			<ul className="list-disc pl-4">
-				{leagues?.map((league: any) => (
-					<li key={league.league_key}>
-						<Leagues league={league} />
-					</li>
-				))}
-			</ul>
-		</div>
+		<>
+			{leagues?.map((league: any) => (
+				<Leagues league={league} key={league.league_key} />
+			))}
+		</>
 	)
 }
 
@@ -24,19 +19,48 @@ async function Leagues({ league }: { league: any }) {
 
 	return (
 		<div key={league.league_key}>
-			<h3 className="font-bold">{league.name}</h3>
-			<ol className="list-decimal pl-4">
-				{teams.map((team: any) => {
-					const t = team.team[0]
-					const isOwner = t[3]?.is_owned_by_current_login
+			<hgroup>
+				<h3 className="font-bold">{league.name}</h3>
+				<p className="technical text-xs">League</p>
+			</hgroup>
 
-					return (
-						<li className={cn(isOwner && 'font-bold')} key={t[0].team_key}>
-							{t[2].name}
-						</li>
-					)
-				})}
-			</ol>
+			<table>
+				<tbody>
+					{teams.map((team: any) => {
+						const t = team.team[0]
+						const isOwner = t[3]?.is_owned_by_current_login
+
+						return (
+							<tr
+								className={cn('flex items-center', isOwner && 'font-bold')}
+								key={t[0].team_key}
+							>
+								<td className="w-[2ch] text-center tabular-nums">
+									{team.team[2].team_standings.rank}
+								</td>
+
+								<td>
+									<img
+										className="size-8"
+										src={t[5].team_logos[0].team_logo.url}
+										width={32}
+										height={32}
+									/>
+								</td>
+
+								<td>
+									{t[2].name}{' '}
+									<span className="technical block text-xs">
+										{t[19].managers
+											.map((manager: any) => manager.manager.nickname)
+											.join(', ')}
+									</span>
+								</td>
+							</tr>
+						)
+					})}
+				</tbody>
+			</table>
 		</div>
 	)
 }
