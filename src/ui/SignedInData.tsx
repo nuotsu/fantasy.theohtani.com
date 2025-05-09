@@ -1,5 +1,5 @@
 import { getLeagues, getStandings } from '@/lib/yf'
-import { cn } from '@/lib/utils'
+import { cn, flatten } from '@/lib/utils'
 
 export default async function SignedInData() {
 	const leagues = await getLeagues()
@@ -7,13 +7,13 @@ export default async function SignedInData() {
 	return (
 		<>
 			{leagues?.map((league: any) => (
-				<Leagues league={league} key={league.league_key} />
+				<Standings league={league} key={league.league_key} />
 			))}
 		</>
 	)
 }
 
-async function Leagues({ league }: { league: any }) {
+async function Standings({ league }: { league: any }) {
 	const standings = await getStandings(league.league_key)
 	const teams = Object.values(standings).filter((team: any) => isNaN(team))
 
@@ -24,16 +24,17 @@ async function Leagues({ league }: { league: any }) {
 				<p className="technical text-xs">League</p>
 			</hgroup>
 
-			<table>
+			<table className="text-center [&_td]:px-2">
 				<tbody>
-					{teams.map((team: any) => {
-						const t = team.team[0]
-						const isOwner = t[3]?.is_owned_by_current_login
+					{teams.map((team) => {
+						const t = flatten<YF.TeamData>(team.team[0])
+						const { wins, losses, ties } =
+							team.team[2].team_standings.outcome_totals
 
 						return (
 							<tr
-								className={cn('flex items-center', isOwner && 'font-bold')}
-								key={t[0].team_key}
+								className={cn(t.is_owned_by_current_login && 'font-bold')}
+								key={t.team_key}
 							>
 								<td className="w-[2ch] text-center tabular-nums">
 									{team.team[2].team_standings.rank}
@@ -42,19 +43,26 @@ async function Leagues({ league }: { league: any }) {
 								<td>
 									<img
 										className="size-8"
-										src={t[5].team_logos[0].team_logo.url}
+										src={t.team_logos[0].team_logo.url}
 										width={32}
 										height={32}
 									/>
 								</td>
 
+								<td className="text-left">{t.name} </td>
+
 								<td>
-									{t[2].name}{' '}
-									<span className="technical block text-xs">
-										{t[19].managers
-											.map((manager: any) => manager.manager.nickname)
-											.join(', ')}
-									</span>
+									{t.managers
+										.map((manager: any) => manager.manager.nickname)
+										.join(', ')}
+								</td>
+
+								<td className="tabular-nums">
+									{wins}-{losses}-{ties}
+								</td>
+
+								<td className="tabular-nums">
+									{team.team[2].team_standings.games_back}
 								</td>
 							</tr>
 						)

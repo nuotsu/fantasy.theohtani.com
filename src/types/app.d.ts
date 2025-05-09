@@ -62,52 +62,7 @@ declare global {
 							{
 								teams: Plural<{
 									team: [
-										[
-											{ team_key: string },
-											{ team_id: string /* number */ },
-											{ name: string },
-											[],
-											{ url: string },
-											{
-												team_logos: Array<{
-													team_logo: {
-														size: string
-														url: string
-													}
-												}>
-											},
-											[],
-											{ waiver_priority: number },
-											[],
-											{ number_of_moves: number },
-											{ number_of_trades: number },
-											{
-												roster_adds: {
-													coverage_type: string
-													coverage_value: number
-													value: string // number
-												}
-											},
-											[],
-											{ league_scoring_type: string },
-											[],
-											{ draft_position: number },
-											{ has_draft_grade: number } | [],
-											[],
-											[],
-											{
-												managers: Array<{
-													manager: {
-														manager_id: string
-														nickname: string
-														guid: string
-														image_url: string
-														felo_score: string // number
-														felo_tier: string
-													}
-												}>
-											},
-										],
+										TeamData,
 										{
 											team_stats: {
 												coverage_type: string
@@ -175,6 +130,53 @@ declare global {
 			game_code: string
 			season: string // number
 		}
+
+		type TeamData = [
+			{ team_key: string },
+			{ team_id: string /* number */ },
+			{ name: string },
+			{ is_owned_by_current_login: 0 | 1 } | [],
+			{ url: string },
+			{
+				team_logos: Array<{
+					team_logo: {
+						size: string
+						url: string
+					}
+				}>
+			},
+			[],
+			{ waiver_priority: number },
+			[],
+			{ number_of_moves: number },
+			{ number_of_trades: number },
+			{
+				roster_adds: {
+					coverage_type: string
+					coverage_value: number
+					value: string // number
+				}
+			},
+			[],
+			{ league_scoring_type: string },
+			[],
+			{ draft_position: number },
+			{ has_draft_grade: number } | [],
+			[],
+			[],
+			{
+				managers: Array<{
+					manager: {
+						manager_id: string
+						nickname: string
+						guid: string
+						image_url: string
+						felo_score: string // number
+						felo_tier: string
+					}
+				}>
+			},
+		]
 	}
 }
 
