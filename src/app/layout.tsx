@@ -1,6 +1,7 @@
-import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
 import '@/app.css'
+import type { Metadata } from 'next'
 
 const font_sans = Geist({
 	subsets: ['latin'],
@@ -22,6 +23,7 @@ export default function RootLayout({
 			<body className="bg-bg text-fg antialiased">
 				<main>{children}</main>
 			</body>
+			<Analytics />
 		</html>
 	)
 }
