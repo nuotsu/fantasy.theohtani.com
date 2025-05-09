@@ -1,7 +1,8 @@
 import { cn, flatten } from '@/lib/utils'
 import { getStandings } from '@/lib/yf'
+import TeamLogo from './team/TeamLogo'
 
-export default async function Standings({ league }: { league: any }) {
+export default async function Standings({ league }: { league: YF.League }) {
 	const standings = await getStandings(league.league_key)
 	const teams = Object.values(standings).filter((team: any) => isNaN(team))
 
@@ -42,11 +43,9 @@ export default async function Standings({ league }: { league: any }) {
 									</td>
 
 									<td className="sticky left-0 px-0! backdrop-blur-[2px]">
-										<img
+										<TeamLogo
 											className="size-8 max-w-[initial]"
-											src={t.team_logos[0].team_logo.url}
-											width={32}
-											height={32}
+											team={team.team[0]}
 										/>
 									</td>
 

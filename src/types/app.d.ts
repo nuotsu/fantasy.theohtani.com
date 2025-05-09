@@ -19,87 +19,69 @@ declare global {
 			count: number
 		}
 
-		interface Users
-			extends Response<{
-				users: Plural<{
-					user: [
-						{ guid: string },
+		type Users = Response<{
+			users: Plural<{
+				user: [
+					{ guid: string },
+					{
+						games: Plural<{
+							game: [
+								{
+									game_key: string
+									game_id: string
+									name: string
+									code: string
+									type: string
+									url: string
+									season: string
+									is_registration_over: 0 | 1
+									is_game_over: 0 | 1
+									is_offseason: 0 | 1
+									is_live_draft_lobby_active: 0 | 1
+									alternate_start_deadline: string // YYYY-MM-DD
+								},
+								{
+									leagues: Plural<{ league: [League] }>
+								},
+							]
+						}>
+					},
+				]
+			}>
+		}>
+
+		type Teams = Response<any>
+
+		type Standings = Response<{
+			league: [
+				League,
+				{
+					standings: [
 						{
-							games: Plural<{
-								game: [
-									{
-										game_key: string
-										game_id: string
-										name: string
-										code: string
-										type: string
-										url: string
-										season: string
-										is_registration_over: 0 | 1
-										is_game_over: 0 | 1
-										is_offseason: 0 | 1
-										is_live_draft_lobby_active: 0 | 1
-										alternate_start_deadline: string // YYYY-MM-DD
-									},
-									{
-										leagues: Plural<{ league: [League] }>
-									},
-								]
+							teams: Plural<{
+								team: [TeamData, TeamStats, TeamStandings]
 							}>
 						},
 					]
-				}>
-			}> {}
+				},
+			]
+		}>
 
-		interface Teams extends Response<any> {}
-
-		interface Standings
-			extends Response<{
-				league: [
-					League,
-					{
-						standings: [
-							{
-								teams: Plural<{
-									team: [
-										TeamData,
-										{
-											team_stats: {
-												coverage_type: string
-												season: string
-												stats: Array<{
-													stat: {
-														stat_id: string
-														value: string // number
-													}
-												}>
-											}
-											team_points: {
-												coverage_type: string
-												season: string
-												total: string // number
-											}
-										},
-										{
-											team_standings: {
-												rank: string // number
-												playoff_seed: string // number
-												outcome_totals: {
-													wins: string // number
-													losses: string // number
-													ties: string // number
-													percentage: string // number
-												}
-												games_back: string // number || '-'
-											}
-										},
-									]
-								}>
-							},
-						]
-					},
-				]
-			}> {}
+		type Scoreboard = Response<{
+			league: [
+				League,
+				{
+					scoreboard: {
+						[key: string /* number */]: {
+							matchups: Plural<{
+								matchup: Matchup
+							}>
+						}
+						week: number
+					}
+				},
+			]
+		}>
 
 		interface League {
 			league_key: string
@@ -177,6 +159,58 @@ declare global {
 				}>
 			},
 		]
+
+		type TeamStats = {
+			team_stats: {
+				coverage_type: string
+				season: string
+				stats: Array<{
+					stat: {
+						stat_id: string
+						value: string // number
+					}
+				}>
+			}
+			team_points: {
+				coverage_type: string
+				season: string
+				total: string // number
+			}
+		}
+
+		type TeamStandings = {
+			team_standings: {
+				rank: string // number
+				playoff_seed: string // number
+				outcome_totals: {
+					wins: string // number
+					losses: string // number
+					ties: string // number
+					percentage: string // number
+				}
+				games_back: string // number || '-'
+			}
+		}
+
+		type Matchup = {
+			'0': {
+				teams: Plural<{
+					team: [TeamData, TeamStats, TeamStandings]
+				}>
+			}
+			week: string // number
+			week_start: string // YYYY-MM-DD
+			week_end: string // YYYY-MM-DD
+			status: string
+			is_playoffs: string // number
+			is_consolation: string // number
+			stat_winners: Array<{
+				stat_winner: {
+					stat_id: string // number
+					winner_team_key: string
+				}
+			}>
+		}
 	}
 }
 

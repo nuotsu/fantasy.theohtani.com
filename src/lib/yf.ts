@@ -34,3 +34,11 @@ export async function getStandings(league_key: string) {
 	const data = await yf<YF.Standings>(`/league/${league_key}/standings`)
 	return data.fantasy_content.league[1].standings[0].teams
 }
+
+export async function getScoreboard(league: YF.League) {
+	const data = await yf<YF.Scoreboard>(
+		`/league/${league.league_key}/scoreboard`,
+	)
+
+	return data.fantasy_content.league[1].scoreboard
+}

@@ -1,5 +1,7 @@
 import { getLeagues } from '@/lib/yf'
+import { Fragment } from 'react'
 import Standings from './Standings'
+import Stats from './Stats'
 
 export default async function SignedInData() {
 	const leagues = await getLeagues()
@@ -7,7 +9,10 @@ export default async function SignedInData() {
 	return (
 		<>
 			{leagues?.map((league: any) => (
-				<Standings league={league} key={league.league_key} />
+				<Fragment key={league.league_key}>
+					<Standings league={league} />
+					<Stats league={league} />
+				</Fragment>
 			))}
 		</>
 	)
