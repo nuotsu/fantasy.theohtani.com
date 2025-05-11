@@ -75,7 +75,7 @@ export default async function Standings({ league }: { league: YF.League }) {
 									<td className="tabular-nums">{percentage}</td>
 
 									<td className="tabular-nums">
-										{games_back ? Number(games_back).toFixed(1) : '-'}
+										{games_back !== '-' ? Number(games_back).toFixed(1) : '-'}
 									</td>
 
 									<td className="tabular-nums">{t.number_of_moves}</td>
