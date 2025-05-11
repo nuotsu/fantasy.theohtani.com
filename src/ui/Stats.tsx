@@ -103,7 +103,7 @@ export default async function Stats({
 									<th
 										className={cn(
 											'sticky left-0 backdrop-blur-xs',
-											stat?.display_name === 'IP' && 'border-t border-dashed',
+											stat?.display_name === 'IP' && 'border-t',
 										)}
 									>
 										{stat?.display_name}
@@ -121,7 +121,7 @@ export default async function Stats({
 															key === 0 &&
 																'relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:border-l',
 															stat?.display_name === 'IP' &&
-																'relative after:absolute after:-inset-x-1 after:inset-y-0 after:border-t after:border-dashed',
+																'border-t border-dashed',
 														)}
 														key={key}
 													>
