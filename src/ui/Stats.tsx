@@ -102,7 +102,7 @@ export default async function Stats({
 								<tr className="tabular-nums" key={stat_id}>
 									<th
 										className={cn(
-											'sticky left-0 backdrop-blur-xs',
+											'sticky left-0 z-1 backdrop-blur-xs',
 											stat?.display_name === 'IP' && 'border-t',
 										)}
 									>

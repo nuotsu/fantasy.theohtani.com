@@ -42,17 +42,16 @@ export default async function Standings({ league }: { league: YF.League }) {
 					<tbody>
 						{teams.map((team) => {
 							const t = flatten<YF.TeamInfo>(team.team[0])
-							const { wins, losses, ties } =
-								team.team[2].team_standings.outcome_totals
+							const { rank, outcome_totals, games_back } =
+								team.team[2].team_standings
+							const { wins, losses, ties, percentage } = outcome_totals
 
 							return (
 								<tr
 									className={cn(t.is_owned_by_current_login && 'font-bold')}
 									key={t.team_key}
 								>
-									<td className="w-[2ch] text-center">
-										{team.team[2].team_standings.rank}
-									</td>
+									<td className="w-[2ch] text-center">{rank}</td>
 
 									<td className="sticky left-0 px-0! backdrop-blur-xs">
 										<TeamLogo
@@ -73,12 +72,10 @@ export default async function Standings({ league }: { league: YF.League }) {
 										{wins}-{losses}-{ties}
 									</td>
 
-									<td className="tabular-nums">
-										{team.team[2].team_standings.outcome_totals.percentage}
-									</td>
+									<td className="tabular-nums">{percentage}</td>
 
 									<td className="tabular-nums">
-										{team.team[2].team_standings.games_back}
+										{games_back ? Number(games_back).toFixed(1) : '-'}
 									</td>
 
 									<td className="tabular-nums">{t.number_of_moves}</td>
