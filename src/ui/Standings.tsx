@@ -1,6 +1,7 @@
 import { cn, flatten } from '@/lib/utils'
 import { getStandings } from '@/lib/yf'
 import TeamLogo from './team/TeamLogo'
+import Projections from './Projections'
 
 export default async function Standings({ league }: { league: YF.League }) {
 	const standings = await getStandings(league.league_key)
@@ -14,22 +15,33 @@ export default async function Standings({ league }: { league: YF.League }) {
 			</hgroup>
 
 			<div className="overflow-x-auto">
-				<table className="text-center whitespace-nowrap [&_td]:px-2">
+				<table className="text-center whitespace-nowrap [&_:is(th,td)]:px-2">
 					<thead>
 						<tr>
-							<th>Rank</th>
-							<th colSpan={2}>Team</th>
-							<th>Manager</th>
-							<th>W-L-T</th>
-							<th>Pct</th>
-							<th>GB</th>
-							<th>Moves</th>
+							<th rowSpan={2}>Rank</th>
+							<th rowSpan={2} colSpan={2}>
+								Team
+							</th>
+							<th rowSpan={2}>Manager</th>
+							<th rowSpan={2}>W-L-T</th>
+							<th rowSpan={2}>Pct</th>
+							<th rowSpan={2}>GB</th>
+							<th rowSpan={2}>Moves</th>
+							<th colSpan={4} className="border-l border-dashed">
+								Projections
+							</th>
+						</tr>
+						<tr>
+							<td className="border-l border-dashed">W-L-T</td>
+							<td>Pct</td>
+							<td>GB</td>
+							<td>Rank</td>
 						</tr>
 					</thead>
 
 					<tbody>
 						{teams.map((team) => {
-							const t = flatten<YF.TeamData>(team.team[0])
+							const t = flatten<YF.TeamInfo>(team.team[0])
 							const { wins, losses, ties } =
 								team.team[2].team_standings.outcome_totals
 
@@ -38,18 +50,18 @@ export default async function Standings({ league }: { league: YF.League }) {
 									className={cn(t.is_owned_by_current_login && 'font-bold')}
 									key={t.team_key}
 								>
-									<td className="w-[2ch] text-center tabular-nums">
+									<td className="w-[2ch] text-center">
 										{team.team[2].team_standings.rank}
 									</td>
 
-									<td className="sticky left-0 px-0! backdrop-blur-[2px]">
+									<td className="sticky left-0 px-0! backdrop-blur-xs">
 										<TeamLogo
 											className="size-8 max-w-[initial]"
 											team={team.team[0]}
 										/>
 									</td>
 
-									<td className="text-left">{t.name} </td>
+									<td className="text-left">{t.name}</td>
 
 									<td>
 										{t.managers
@@ -70,6 +82,8 @@ export default async function Standings({ league }: { league: YF.League }) {
 									</td>
 
 									<td className="tabular-nums">{t.number_of_moves}</td>
+
+									<Projections league={league} team={team} />
 								</tr>
 							)
 						})}

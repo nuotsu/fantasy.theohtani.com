@@ -24,14 +24,7 @@ declare global {
 				user: [
 					{ guid: string },
 					{
-						games: Plural<{
-							game: [
-								Game,
-								{
-									leagues: Plural<{ league: [League] }>
-								},
-							]
-						}>
+						games: Plural<{ game: Game }>
 					},
 				]
 			}>
@@ -40,18 +33,7 @@ declare global {
 		type Teams = Response<any>
 
 		type Standings = Response<{
-			league: [
-				League,
-				{
-					standings: [
-						{
-							teams: Plural<{
-								team: [TeamData, TeamStats, TeamStandings]
-							}>
-						},
-					]
-				},
-			]
+			league: [League, { standings: [{ teams: Plural<{ team: Team }> }] }]
 		}>
 
 		type Scoreboard = Response<{
@@ -60,9 +42,7 @@ declare global {
 				{
 					scoreboard: {
 						[key: string /* number */]: {
-							matchups: Plural<{
-								matchup: Matchup
-							}>
+							matchups: Plural<{ matchup: Matchup }>
 						}
 						week: number
 					}
@@ -72,7 +52,7 @@ declare global {
 
 		type StatCategories = Response<{
 			game: [
-				Game,
+				GameInfo,
 				{
 					stat_categories: {
 						stats: Array<{
@@ -81,9 +61,7 @@ declare global {
 								name: string
 								display_name: string
 								sort_order: string // number
-								position_types: Array<{
-									position_type: string
-								}>
+								position_types: Array<{ position_type: string }>
 							}
 						}>
 					}
@@ -121,7 +99,9 @@ declare global {
 			season: string // number
 		}
 
-		interface Game {
+		type Game = [GameInfo, { leagues: Plural<{ league: [League] }> }]
+
+		interface GameInfo {
 			game_key: string
 			game_id: string
 			name: string
@@ -136,7 +116,9 @@ declare global {
 			alternate_start_deadline: string // YYYY-MM-DD
 		}
 
-		type TeamData = [
+		type Team = [TeamInfo, TeamStats, TeamStandings]
+
+		type TeamInfo = [
 			{ team_key: string },
 			{ team_id: string /* number */ },
 			{ name: string },
@@ -216,11 +198,7 @@ declare global {
 		}
 
 		type Matchup = {
-			'0': {
-				teams: Plural<{
-					team: [TeamData, TeamStats, TeamStandings]
-				}>
-			}
+			'0': { teams: Plural<{ team: Team }> }
 			week: string // number
 			week_start: string // YYYY-MM-DD
 			week_end: string // YYYY-MM-DD

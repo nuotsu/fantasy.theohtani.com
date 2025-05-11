@@ -7,7 +7,7 @@ export default async function Stats({
 	game,
 	league,
 }: {
-	game: YF.Game
+	game: YF.GameInfo
 	league: YF.League
 }) {
 	const scoreboard = await getScoreboard(league)
@@ -21,7 +21,6 @@ export default async function Stats({
 	].teams[0].team[1].team_stats.stats.map((stat) => stat.stat.stat_id)
 
 	const stat_categories = (await getStatCategories(game)).map((c) => c.stat)
-	console.log(stat_categories)
 
 	return (
 		<div>
@@ -36,8 +35,8 @@ export default async function Stats({
 							{matchups.map((matchup: { matchup: YF.Matchup }, key) => (
 								<Fragment key={key}>
 									{getPluralItems(matchup.matchup['0'].teams).map(
-										({ team }: { team: [YF.TeamData, YF.TeamStats] }, key) => {
-											const t = flatten<YF.TeamData>(team[0])
+										({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, key) => {
+											const t = flatten<YF.TeamInfo>(team[0])
 
 											return (
 												<th className="relative" key={t.team_key}>
@@ -64,7 +63,7 @@ export default async function Stats({
 							{matchups.map((matchup: { matchup: YF.Matchup }, key) => (
 								<Fragment key={key}>
 									{getPluralItems(matchup.matchup['0'].teams).map(
-										({ team }: { team: [YF.TeamData, YF.TeamStats] }, key) => (
+										({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, key) => (
 											<td className="relative" key={key}>
 												{key === 1 && (
 													<span className="absolute left-0 -translate-x-1/2">
@@ -95,7 +94,7 @@ export default async function Stats({
 										<Fragment key={key}>
 											{getPluralItems(matchup.matchup['0'].teams).map(
 												(
-													{ team }: { team: [YF.TeamData, YF.TeamStats] },
+													{ team }: { team: [YF.TeamInfo, YF.TeamStats] },
 													key,
 												) => (
 													<td key={key}>

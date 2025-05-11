@@ -50,7 +50,7 @@ export async function getScoreboard(league: YF.League) {
 	return data.fantasy_content.league[1].scoreboard
 }
 
-export async function getStatCategories(game: YF.Game) {
+export async function getStatCategories(game: YF.GameInfo) {
 	const data = await yf<YF.StatCategories>(
 		`/game/${game.game_key}/stat_categories`,
 	)
