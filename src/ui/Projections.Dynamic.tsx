@@ -31,7 +31,9 @@ export default function DynamicProjections({
 				.map((e) => Number(e.textContent))
 				.sort((a, b) => b - a),
 		)
+	}, [])
 
+	useEffect(() => {
 		setLeader(
 			document
 				.querySelector('[data-projected-rank="1"]')

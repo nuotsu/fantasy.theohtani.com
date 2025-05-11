@@ -1,4 +1,4 @@
-import { flatten, getPluralItems } from '@/lib/utils'
+import { cn, flatten, getPluralItems } from '@/lib/utils'
 import { getScoreboard, getStatCategories } from '@/lib/yf'
 import { Fragment } from 'react'
 import TeamLogo from './team/TeamLogo'
@@ -27,7 +27,7 @@ export default async function Stats({
 			<h2 className="font-bold">Week {scoreboard.week}</h2>
 
 			<div className="overflow-x-auto">
-				<table className="text-center whitespace-nowrap [&_td]:px-2">
+				<table className="border-separate text-center whitespace-nowrap [&_:is(th,td)]:px-2">
 					<thead>
 						<tr>
 							<th></th>
@@ -39,7 +39,14 @@ export default async function Stats({
 											const t = flatten<YF.TeamInfo>(team[0])
 
 											return (
-												<th className="relative" key={t.team_key}>
+												<th
+													className={cn({
+														'relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:border-l':
+															key === 0,
+														relative: key === 1,
+													})}
+													key={t.team_key}
+												>
 													{key === 1 && (
 														<span className="absolute top-1/2 left-0 inline-block -translate-1/2 bg-red-500 px-1 py-0.5 text-[xx-small]/none text-white">
 															VS
@@ -64,7 +71,14 @@ export default async function Stats({
 								<Fragment key={key}>
 									{getPluralItems(matchup.matchup['0'].teams).map(
 										({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, key) => (
-											<td className="relative" key={key}>
+											<td
+												className={cn(
+													'relative',
+													key === 0 &&
+														'relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:border-l',
+												)}
+												key={key}
+											>
 												{key === 1 && (
 													<span className="absolute left-0 -translate-x-1/2">
 														-
@@ -86,7 +100,12 @@ export default async function Stats({
 
 							return (
 								<tr className="tabular-nums" key={stat_id}>
-									<th className="sticky left-0 backdrop-blur-xs">
+									<th
+										className={cn(
+											'sticky left-0 backdrop-blur-xs',
+											stat?.display_name === 'IP' && 'border-t border-dashed',
+										)}
+									>
 										{stat?.display_name}
 									</th>
 
@@ -97,7 +116,15 @@ export default async function Stats({
 													{ team }: { team: [YF.TeamInfo, YF.TeamStats] },
 													key,
 												) => (
-													<td key={key}>
+													<td
+														className={cn(
+															key === 0 &&
+																'relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:border-l',
+															stat?.display_name === 'IP' &&
+																'relative after:absolute after:-inset-x-1 after:inset-y-0 after:border-t after:border-dashed',
+														)}
+														key={key}
+													>
 														{
 															team[1].team_stats.stats.find(
 																(stat) => stat.stat.stat_id === stat_id,
