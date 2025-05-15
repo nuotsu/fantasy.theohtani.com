@@ -5,6 +5,17 @@
 
 	--color-bg: #fff;
 	--color-fg: #000;
+
+	--color-yahoo-purple: #6001d2;
+}
+
+@layer base {
+	:root {
+		@media (prefers-color-scheme: dark) {
+			--color-bg: #000;
+			--color-fg: #fff;
+		}
+	}
 }
 
 @utility technical {

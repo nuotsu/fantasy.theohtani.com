@@ -57,7 +57,9 @@ export default async function Projections({
 			<td className="project-wlt border-l border-dashed tabular-nums">
 				{projected_wins}-{projected_losses}-{projected_ties}
 			</td>
+
 			<td className="projected-pct tabular-nums">{projected_pct}</td>
+
 			<DynamicProjections
 				rank={team.team[2].team_standings.rank}
 				wins={projected_wins}

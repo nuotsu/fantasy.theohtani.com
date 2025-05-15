@@ -8,34 +8,32 @@ export default async function Standings({ league }: { league: YF.League }) {
 	const teams = Object.values(standings).filter((team: any) => isNaN(team))
 
 	return (
-		<div key={league.league_key}>
-			<hgroup>
-				<h3 className="font-bold">{league.name}</h3>
-				<p className="technical text-xs">League</p>
-			</hgroup>
+		<section key={league.league_key}>
+			<h2 className="text-center font-bold">{league.name}</h2>
 
 			<div className="overflow-x-auto">
-				<table className="text-center whitespace-nowrap [&_:is(th,td)]:px-2">
+				<table className="w-full text-center whitespace-nowrap [&_:is(th,td)]:px-2">
 					<thead>
-						<tr>
+						<tr className="[&_[rowspan]]:align-bottom">
 							<th rowSpan={2}>Rank</th>
 							<th rowSpan={2} colSpan={2}>
 								Team
 							</th>
 							<th rowSpan={2}>Manager</th>
-							<th rowSpan={2}>W-L-T</th>
-							<th rowSpan={2}>Pct</th>
-							<th rowSpan={2}>GB</th>
 							<th rowSpan={2}>Moves</th>
+							<th colSpan={3}>This Week</th>
 							<th colSpan={4} className="border-l border-dashed">
 								Projections
 							</th>
 						</tr>
-						<tr>
-							<td className="border-l border-dashed">W-L-T</td>
-							<td>Pct</td>
-							<td>GB</td>
-							<td>Rank</td>
+						<tr className="font-bold">
+							<th>W-L-T</th>
+							<th>Pct</th>
+							<th>GB</th>
+							<th className="border-l border-dashed">W-L-T</th>
+							<th>Pct</th>
+							<th>GB</th>
+							<th>Rank</th>
 						</tr>
 					</thead>
 
@@ -68,6 +66,8 @@ export default async function Standings({ league }: { league: YF.League }) {
 											.join(', ')}
 									</td>
 
+									<td className="tabular-nums">{t.number_of_moves}</td>
+
 									<td className="tabular-nums">
 										{wins}-{losses}-{ties}
 									</td>
@@ -78,8 +78,6 @@ export default async function Standings({ league }: { league: YF.League }) {
 										{games_back !== '-' ? Number(games_back).toFixed(1) : '-'}
 									</td>
 
-									<td className="tabular-nums">{t.number_of_moves}</td>
-
 									<Projections league={league} team={team} />
 								</tr>
 							)
@@ -87,6 +85,6 @@ export default async function Standings({ league }: { league: YF.League }) {
 					</tbody>
 				</table>
 			</div>
-		</div>
+		</section>
 	)
 }

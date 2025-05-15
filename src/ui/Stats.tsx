@@ -23,37 +23,39 @@ export default async function Stats({
 	const stat_categories = (await getStatCategories(game)).map((c) => c.stat)
 
 	return (
-		<div>
-			<h2 className="font-bold">Week {scoreboard.week}</h2>
+		<section>
+			<h2 className="text-center font-bold">Week {scoreboard.week}</h2>
 
 			<div className="overflow-x-auto">
-				<table className="border-separate text-center whitespace-nowrap [&_:is(th,td)]:px-2">
+				<table className="w-full text-center whitespace-nowrap [&_:is(th,td)]:px-2 [&_td]:min-w-[6ch]">
 					<thead>
 						<tr>
 							<th></th>
 
-							{matchups.map((matchup: { matchup: YF.Matchup }, key) => (
-								<Fragment key={key}>
+							{matchups.map((matchup: { matchup: YF.Matchup }, i) => (
+								<Fragment key={i}>
 									{getPluralItems(matchup.matchup['0'].teams).map(
-										({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, key) => {
+										({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, ii) => {
 											const t = flatten<YF.TeamInfo>(team[0])
 
 											return (
 												<th
 													className={cn({
-														'relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:border-l':
-															key === 0,
-														relative: key === 1,
+														'border-l': ii === 0 && i > 0,
+														relative: ii === 1,
 													})}
 													key={t.team_key}
 												>
-													{key === 1 && (
+													{ii === 1 && (
 														<span className="absolute top-1/2 left-0 inline-block -translate-1/2 bg-red-500 px-1 py-0.5 text-[xx-small]/none text-white">
 															VS
 														</span>
 													)}
 
-													<TeamLogo className="mx-auto size-8" team={team[0]} />
+													<TeamLogo
+														className="mx-auto size-8 max-w-[initial]"
+														team={team[0]}
+													/>
 												</th>
 											)
 										},
@@ -67,19 +69,17 @@ export default async function Stats({
 						<tr>
 							<th></th>
 
-							{matchups.map((matchup: { matchup: YF.Matchup }, key) => (
-								<Fragment key={key}>
+							{matchups.map((matchup: { matchup: YF.Matchup }, i) => (
+								<Fragment key={i}>
 									{getPluralItems(matchup.matchup['0'].teams).map(
-										({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, key) => (
+										({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, ii) => (
 											<td
-												className={cn(
-													'relative',
-													key === 0 &&
-														'relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:border-l',
-												)}
-												key={key}
+												className={cn('relative', {
+													'border-l': ii === 0 && i > 0,
+												})}
+												key={ii}
 											>
-												{key === 1 && (
+												{ii === 1 && (
 													<span className="absolute left-0 -translate-x-1/2">
 														-
 													</span>
@@ -100,47 +100,55 @@ export default async function Stats({
 
 							return (
 								<tr className="tabular-nums" key={stat_id}>
-									<th
-										className={cn(
-											'sticky left-0 z-1 backdrop-blur-xs',
-											stat?.display_name === 'IP' && 'border-t',
-										)}
-									>
+									<th className="sticky left-0 z-1 backdrop-blur-xs">
 										{stat?.display_name}
 									</th>
 
-									{matchups.map((matchup: { matchup: YF.Matchup }, key) => (
-										<Fragment key={key}>
-											{getPluralItems(matchup.matchup['0'].teams).map(
-												(
-													{ team }: { team: [YF.TeamInfo, YF.TeamStats] },
-													key,
-												) => (
-													<td
-														className={cn(
-															key === 0 &&
-																'relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:border-l',
-															stat?.display_name === 'IP' &&
-																'border-t border-dashed',
-														)}
-														key={key}
-													>
-														{
-															team[1].team_stats.stats.find(
-																(stat) => stat.stat.stat_id === stat_id,
-															)?.stat.value
-														}
-													</td>
-												),
-											)}
-										</Fragment>
-									))}
+									{matchups.map((matchup: { matchup: YF.Matchup }, i) => {
+										const { winner_team_key } =
+											matchup.matchup.stat_winners.find(
+												({ stat_winner }) => stat_winner.stat_id === stat_id,
+											)?.stat_winner ?? {}
+
+										return (
+											<Fragment key={i}>
+												{getPluralItems(matchup.matchup['0'].teams).map(
+													(
+														{ team }: { team: [YF.TeamInfo, YF.TeamStats] },
+														ii,
+													) => {
+														const t = flatten<YF.TeamInfo>(team[0])
+
+														return (
+															<td
+																className={cn({
+																	'border-fg border-l': ii === 0 && i > 0,
+																	'border-t': stat?.display_name === 'H/AB',
+																	'border-t [border-top-style:dashed]':
+																		stat?.display_name === 'IP',
+																	'bg-green-400/15 font-bold dark:text-green-400':
+																		winner_team_key === t.team_key,
+																})}
+																key={ii}
+															>
+																{
+																	team[1].team_stats.stats.find(
+																		(stat) => stat.stat.stat_id === stat_id,
+																	)?.stat.value
+																}
+															</td>
+														)
+													},
+												)}
+											</Fragment>
+										)
+									})}
 								</tr>
 							)
 						})}
 					</tbody>
 				</table>
 			</div>
-		</div>
+		</section>
 	)
 }

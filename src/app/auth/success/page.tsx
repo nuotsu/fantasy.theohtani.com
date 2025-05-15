@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Loading from '@/ui/Loading'
 
 export default function AuthSuccess() {
 	const router = useRouter()
@@ -10,5 +11,5 @@ export default function AuthSuccess() {
 		router.push('/')
 	}, [router])
 
-	return <div>Loading...</div>
+	return <Loading />
 }

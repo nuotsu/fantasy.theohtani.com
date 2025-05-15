@@ -62,6 +62,7 @@ export default function DynamicProjections({
 	return (
 		<>
 			<td className="tabular-nums">{gb ? gb.toFixed(1) : '-'}</td>
+
 			<td
 				className="relative *:absolute *:top-1/2 *:right-0 *:-translate-y-1/2"
 				data-projected-rank={projected_rank}

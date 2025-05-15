@@ -208,7 +208,8 @@ declare global {
 			stat_winners: Array<{
 				stat_winner: {
 					stat_id: string // number
-					winner_team_key: string
+					winner_team_key?: string
+					is_tied?: number // 0 | 1
 				}
 			}>
 		}

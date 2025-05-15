@@ -23,6 +23,7 @@ export async function getUsersGamesLeagues() {
 	)
 
 	const users = data.fantasy_content.users
+
 	const games = users['0'].user[1].games
 	const leagues = games['0'].game[1].leagues['0'].league
 

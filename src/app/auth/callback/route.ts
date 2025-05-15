@@ -24,8 +24,6 @@ export async function GET({ url }: Request) {
 
 	const cookieStore = await cookies()
 
-	console.log(data)
-
 	cookieStore.set(
 		'token',
 		JSON.stringify({

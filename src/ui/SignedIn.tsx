@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import Standings from './Standings'
 import Stats from './Stats'
 
-export default async function SignedInData() {
+export default async function SignedIn() {
 	const { games, leagues } = await getUsersGamesLeagues()
 
 	return (

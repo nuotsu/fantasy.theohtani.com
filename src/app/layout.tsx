@@ -20,8 +20,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className="bg-bg text-fg dark:bg-fg dark:text-bg antialiased">
-				<main>{children}</main>
+			<body className="bg-bg text-fg antialiased">
+				<main className="flex flex-col gap-4 pb-[env(safe-area-inset-bottom)]">
+					{children}
+				</main>
 			</body>
 			<Analytics />
 		</html>
