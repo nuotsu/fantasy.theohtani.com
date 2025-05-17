@@ -16,6 +16,10 @@
 			--color-fg: #fff;
 		}
 	}
+
+	* {
+		min-width: 0;
+	}
 }
 
 @utility technical {

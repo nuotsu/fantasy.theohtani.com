@@ -21,10 +21,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className="bg-bg text-fg antialiased">
-				<main className="flex flex-col gap-4 pb-[env(safe-area-inset-bottom)]">
+				<main className="flex min-h-svh flex-col pb-[env(safe-area-inset-bottom)]">
 					{children}
 				</main>
 			</body>
+
 			<Analytics />
 		</html>
 	)

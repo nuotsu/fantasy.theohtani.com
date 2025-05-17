@@ -6,6 +6,7 @@
 		"dev": "next dev",
 		"dev:turbopack": "next dev --turbopack",
 		"ngrok": "ngrok http --url=picked-condor-severely.ngrok-free.app 3000",
+		"lt": "lt --port 3000 --subdomain=fantasy-theohtani",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
@@ -14,6 +15,7 @@
 	"dependencies": {
 		"@vercel/analytics": "^1.5.0",
 		"clsx": "^2.1.1",
+		"localtunnel": "^2.0.2",
 		"next": "15.3.2",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",

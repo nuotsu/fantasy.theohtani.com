@@ -1,4 +1,5 @@
 import getToken from './getToken'
+import { Flatten, flatten, getPluralItems } from './utils'
 
 export async function yf<T = any>(endpoint: string) {
 	const token = await getToken()
@@ -12,9 +13,7 @@ export async function yf<T = any>(endpoint: string) {
 		},
 	)
 
-	const data = await res.json()
-
-	return data as T
+	return (await res.json()) as T
 }
 
 export async function getUsersGamesLeagues() {
@@ -56,4 +55,55 @@ export async function getStatCategories(game: YF.GameInfo) {
 		`/game/${game.game_key}/stat_categories`,
 	)
 	return data.fantasy_content.game[1].stat_categories.stats
+}
+
+export async function getWeeklyStatWinners(
+	matchups: { matchup: YF.Matchup }[],
+	stat_ids: string[],
+) {
+	const teams = matchups
+		.flatMap((matchup) =>
+			getPluralItems(matchup.matchup['0'].teams).map(({ team }) => team),
+		)
+		.map((team) => {
+			const { team_key } = flatten<YF.TeamInfo>(team[0])
+			const { stats } = (team[1] as YF.TeamStats).team_stats
+
+			return {
+				team_key,
+				stats,
+			}
+		}) as (Pick<Flatten<YF.TeamInfo>, 'team_key'> &
+		Pick<YF.TeamStats['team_stats'], 'stats'>)[]
+
+	return stat_ids
+		.filter((stat_id) => !['50', '60'].includes(stat_id))
+		.map((stat_id) => {
+			const sorted = teams.sort((a, b) => {
+				const a_stat = a.stats.find((stat) => stat.stat.stat_id === stat_id)
+				const b_stat = b.stats.find((stat) => stat.stat.stat_id === stat_id)
+
+				// lower is better
+				if (['26', '27'].includes(stat_id))
+					return Number(a_stat?.stat.value) > Number(b_stat?.stat.value)
+						? 1
+						: -1
+
+				// higher is better
+				return Number(a_stat?.stat.value) < Number(b_stat?.stat.value) ? 1 : -1
+			})
+
+			const winners = sorted.filter(
+				(team) =>
+					team.stats.find((stat) => stat.stat.stat_id === stat_id)?.stat
+						.value ===
+					sorted[0].stats.find((stat) => stat.stat.stat_id === stat_id)?.stat
+						.value,
+			)
+
+			return {
+				stat_id,
+				team_keys: winners.map((team) => team.team_key),
+			}
+		})
 }

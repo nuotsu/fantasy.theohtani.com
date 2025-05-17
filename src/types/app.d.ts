@@ -30,7 +30,9 @@ declare global {
 			}>
 		}>
 
-		type Teams = Response<any>
+		type Teams = Response<{
+			league: [League, { teams: Plural<{ team: Team }> }]
+		}>
 
 		type Standings = Response<{
 			league: [League, { standings: [{ teams: Plural<{ team: Team }> }] }]
@@ -171,7 +173,7 @@ declare global {
 				season: string
 				stats: Array<{
 					stat: {
-						stat_id: string
+						stat_id: string // number
 						value: string // number
 					}
 				}>
