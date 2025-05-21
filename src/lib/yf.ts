@@ -79,19 +79,26 @@ export async function getWeeklyStatWinners(
 	return stat_ids
 		.filter((stat_id) => !['50', '60'].includes(stat_id))
 		.map((stat_id) => {
-			const sorted = teams.sort((a, b) => {
-				const a_stat = a.stats.find((stat) => stat.stat.stat_id === stat_id)
-				const b_stat = b.stats.find((stat) => stat.stat.stat_id === stat_id)
+			const sorted = teams
+				.filter(
+					(team) =>
+						team.stats.find(({ stat }) => stat.stat_id === stat_id)?.stat.value,
+				)
+				.sort((a, b) => {
+					const a_stat = a.stats.find(({ stat }) => stat.stat_id === stat_id)
+					const b_stat = b.stats.find(({ stat }) => stat.stat_id === stat_id)
 
-				// lower is better
-				if (['26', '27'].includes(stat_id))
-					return Number(a_stat?.stat.value) > Number(b_stat?.stat.value)
+					// lower is better
+					if (['26', '27'].includes(stat_id))
+						return Number(a_stat?.stat.value) > Number(b_stat?.stat.value)
+							? 1
+							: -1
+
+					// higher is better
+					return Number(a_stat?.stat.value) < Number(b_stat?.stat.value)
 						? 1
 						: -1
-
-				// higher is better
-				return Number(a_stat?.stat.value) < Number(b_stat?.stat.value) ? 1 : -1
-			})
+				})
 
 			const winners = sorted.filter(
 				(team) =>
