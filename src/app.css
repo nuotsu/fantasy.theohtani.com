@@ -7,6 +7,9 @@
 	--color-fg: #000;
 
 	--color-yahoo-purple: #6001d2;
+
+	--spacing-ch: 1ch;
+	--spacing-lh: 1lh;
 }
 
 @layer base {

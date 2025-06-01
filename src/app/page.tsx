@@ -27,6 +27,16 @@ export default async function Home() {
 						loading="eager"
 						priority
 					/>
+
+					<p className="text-fg/50 -mt-lh text-center text-xs">
+						Built by{' '}
+						<a
+							className="underline"
+							href="https://github.com/nuotsu/fantasy.theohtani.com"
+						>
+							nuotsu
+						</a>
+					</p>
 				</section>
 			)}
 		</>
