@@ -31,7 +31,7 @@ export default async function Transaction({
 	const timestamp = new Date(Number(transaction[0].timestamp) * 1000)
 
 	return (
-		<li className="scroll-ml-ch shrink-0 snap-start">
+		<li className="scroll-ml-ch row-start-2 snap-start">
 			<header className="gap-x-ch flex items-center justify-between">
 				<TeamLogo className="size-[2ch]" size={24} team={team} />
 
@@ -40,9 +40,12 @@ export default async function Transaction({
 					dateTime={timestamp.toISOString()}
 				>
 					{new Intl.DateTimeFormat('en-US', {
-						dateStyle: 'short',
-						timeStyle: 'short',
-					}).format(timestamp)}
+						hour: 'numeric',
+						minute: '2-digit',
+						hour12: true,
+					})
+						.format(timestamp)
+						.replace(',', '')}
 				</time>
 			</header>
 

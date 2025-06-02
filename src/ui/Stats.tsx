@@ -29,7 +29,7 @@ export default async function Stats({
 	const weekly_stat_winners = await getWeeklyStatWinners(matchups, stat_ids)
 
 	return (
-		<article className="overflow-x-auto pb-2">
+		<section className="overflow-x-auto pb-2">
 			<table className="w-full text-center whitespace-nowrap [&_:is(th,td)]:px-2 [&_td]:min-w-[6ch]">
 				<thead>
 					<tr>
@@ -167,6 +167,6 @@ export default async function Stats({
 					})}
 				</tbody>
 			</table>
-		</article>
+		</section>
 	)
 }

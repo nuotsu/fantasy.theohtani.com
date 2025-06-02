@@ -11,7 +11,7 @@ export default async function SignedIn() {
 	return (
 		<>
 			{leagues?.map((league: any) => (
-				<section className="grid gap-4" key={league.league_key}>
+				<article className="grid gap-4" key={league.league_key}>
 					<Suspense fallback={<Loading>Loading Standings...</Loading>}>
 						<Standings league={league} />
 					</Suspense>
@@ -23,7 +23,7 @@ export default async function SignedIn() {
 					<Suspense fallback={<Loading>Loading Transactions...</Loading>}>
 						<TransactionList league={league} />
 					</Suspense>
-				</section>
+				</article>
 			))}
 		</>
 	)

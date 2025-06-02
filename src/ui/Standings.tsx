@@ -9,8 +9,8 @@ export default async function Standings({ league }: { league: YF.LeagueInfo }) {
 	const teams = Object.values(standings).filter((team: any) => isNaN(team))
 
 	return (
-		<article key={league.league_key}>
-			<header className="gap-ch p-ch flex flex-wrap items-center justify-between text-center">
+		<section className="gap-ch grid" key={league.league_key}>
+			<header className="gap-ch px-ch flex flex-wrap items-center justify-between text-center">
 				<h2 className="gap-ch flex items-center font-bold">
 					<img
 						className="aspect-square size-8 shrink-0 object-cover"
@@ -38,7 +38,7 @@ export default async function Standings({ league }: { league: YF.LeagueInfo }) {
 							<th rowSpan={2}>Manager</th>
 							<th rowSpan={2}>Moves</th>
 							<th colSpan={3} className="border-l border-dashed">
-								This Week
+								Current
 							</th>
 							<th colSpan={4} className="border-l border-dashed">
 								Projections
@@ -110,6 +110,6 @@ export default async function Standings({ league }: { league: YF.LeagueInfo }) {
 					</tbody>
 				</table>
 			</div>
-		</article>
+		</section>
 	)
 }

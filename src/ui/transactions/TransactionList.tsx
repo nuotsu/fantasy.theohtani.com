@@ -1,5 +1,5 @@
 import { getTransactions } from '@/lib/yf'
-import { getPluralItems } from '@/lib/utils'
+import { cn, getPluralItems } from '@/lib/utils'
 import Transaction from './Transaction'
 
 export default async function TransactionList({
@@ -12,18 +12,51 @@ export default async function TransactionList({
 		transaction: YF.Transaction
 	}>
 
+	const groupByDate = transactions.reduce(
+		(acc, { transaction }) => {
+			const date = new Date(Number(transaction[0].timestamp) * 1000)
+			const dateKey = new Intl.DateTimeFormat('en-US', {
+				weekday: 'short',
+				month: 'short',
+				day: 'numeric',
+			}).format(date)
+
+			acc[dateKey] = acc[dateKey] || []
+			acc[dateKey].push(transaction)
+			return acc
+		},
+		{} as Record<string, YF.Transaction[]>,
+	)
+
 	return (
-		<article>
+		<section>
 			<h2 className="sr-only">Recent Transactions</h2>
 
-			<ul className="gap-ch px-ch flex snap-x snap-mandatory overflow-x-auto">
-				{transactions?.map(({ transaction }) => (
-					<Transaction
-						transaction={transaction}
-						key={transaction[0].transaction_key}
-					/>
+			<div className="gap-ch no-scrollbar grid snap-x snap-mandatory auto-cols-[18ch] grid-flow-col grid-rows-[auto_auto] overflow-x-auto overflow-y-clip">
+				{Object.entries(groupByDate).map(([date, transactions], i) => (
+					<div className="contents" key={date}>
+						<h2 style={{ gridColumn: `span ${transactions.length}` }}>
+							<time className="left-ch sticky" dateTime={date}>
+								{date}
+							</time>
+						</h2>
+
+						<ul
+							className={cn('contents', {
+								'*:first:pl-ch': i === 0,
+								'*:last:pr-[2ch]': i === Object.keys(groupByDate).length - 1,
+							})}
+						>
+							{transactions.map((transaction) => (
+								<Transaction
+									transaction={transaction}
+									key={transaction[0].transaction_key}
+								/>
+							))}
+						</ul>
+					</div>
 				))}
-			</ul>
-		</article>
+			</div>
+		</section>
 	)
 }

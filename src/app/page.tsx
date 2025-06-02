@@ -9,9 +9,11 @@ export default async function Home() {
 	return (
 		<>
 			{token?.access_token ? (
-				<SignedIn />
+				<section className="gap-ch flex min-h-svh flex-col justify-center">
+					<SignedIn />
+				</section>
 			) : (
-				<section className="m-auto grid place-items-center gap-4">
+				<section className="gap-ch m-auto grid place-items-center">
 					<h1>
 						<strong>Fantasy</strong> by <strong>TheOhtani.com</strong>
 					</h1>

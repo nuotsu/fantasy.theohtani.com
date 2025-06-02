@@ -28,13 +28,10 @@ function Item({
 
 	return (
 		<dl
-			className={cn(
-				'grid w-[16ch] grid-cols-[auto_1fr] gap-x-[.5ch] px-[.5ch]',
-				{
-					'bg-green-400/15': type === 'add',
-					'bg-red-400/15': type === 'drop',
-				},
-			)}
+			className={cn('grid grid-cols-[auto_1fr] gap-x-[.5ch] px-[.5ch]', {
+				'bg-green-400/15': type === 'add',
+				'bg-red-400/15': type === 'drop',
+			})}
 		>
 			<dt
 				className={cn('w-ch shrink-0 text-center', {
