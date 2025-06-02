@@ -12,7 +12,7 @@ export default async function Stats({
 	league,
 }: {
 	game: YF.GameInfo
-	league: YF.League
+	league: YF.LeagueInfo
 }) {
 	const scoreboard = await getScoreboard(league)
 
@@ -43,9 +43,10 @@ export default async function Stats({
 
 										return (
 											<th
-												className={cn({
+												className={cn('pt-[.5ch]', {
 													'border-l': ii === 0 && i > 0,
 													relative: ii === 1,
+													'bg-fg/15': t.is_owned_by_current_login,
 												})}
 												data-team-key={t.team_key}
 												key={t.team_key}
@@ -57,7 +58,7 @@ export default async function Stats({
 												)}
 
 												<TeamLogo
-													className="mx-auto size-8 max-w-[initial]"
+													className="inline-block size-8 max-w-[initial]"
 													team={team[0]}
 												/>
 											</th>
@@ -67,26 +68,34 @@ export default async function Stats({
 							</Fragment>
 						))}
 					</tr>
+
 					<tr>
 						{matchups.map((matchup: { matchup: YF.Matchup }, i) => (
 							<Fragment key={i}>
 								{getPluralItems(matchup.matchup['0'].teams).map(
-									({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, ii) => (
-										<td
-											className={cn('relative', {
-												'border-l': ii === 0 && i > 0,
-											})}
-											key={ii}
-										>
-											{ii === 1 && (
-												<span className="absolute left-0 -translate-x-1/2">
-													-
-												</span>
-											)}
+									({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, ii) => {
+										const t = flatten<YF.TeamInfo>(team[0])
 
-											<strong>{team[1].team_points.total}</strong>
-										</td>
-									),
+										return (
+											<td
+												className={cn('relative', {
+													'border-l': ii === 0 && i > 0,
+													'bg-fg/15': t.is_owned_by_current_login,
+												})}
+												key={ii}
+											>
+												{ii === 1 && (
+													<span className="absolute left-0 -translate-x-1/2">
+														-
+													</span>
+												)}
+
+												<big className="font-bold">
+													{team[1].team_points.total}
+												</big>
+											</td>
+										)
+									},
 								)}
 							</Fragment>
 						))}

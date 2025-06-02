@@ -19,6 +19,8 @@ declare global {
 			count: number
 		}
 
+		// responses
+
 		type Users = Response<{
 			users: Plural<{
 				user: [
@@ -31,16 +33,20 @@ declare global {
 		}>
 
 		type Teams = Response<{
-			league: [League, { teams: Plural<{ team: Team }> }]
+			league: [LeagueInfo, { teams: Plural<{ team: Team }> }]
+		}>
+
+		type TeamResponse = Response<{
+			team: [TeamInfo]
 		}>
 
 		type Standings = Response<{
-			league: [League, { standings: [{ teams: Plural<{ team: Team }> }] }]
+			league: [LeagueInfo, { standings: [{ teams: Plural<{ team: Team }> }] }]
 		}>
 
 		type Scoreboard = Response<{
 			league: [
-				League,
+				LeagueInfo,
 				{
 					scoreboard: {
 						[key: string /* number */]: {
@@ -71,7 +77,20 @@ declare global {
 			]
 		}>
 
-		interface League {
+		type Transactions = Response<{
+			league: [
+				LeagueInfo,
+				{
+					transactions: Plural<{
+						transaction: Transaction
+					}>
+				},
+			]
+		}>
+
+		// objects
+
+		interface LeagueInfo {
 			league_key: string
 			league_id: string
 			name: string
@@ -101,7 +120,7 @@ declare global {
 			season: string // number
 		}
 
-		type Game = [GameInfo, { leagues: Plural<{ league: [League] }> }]
+		type Game = [GameInfo, { leagues: Plural<{ league: [LeagueInfo] }> }]
 
 		interface GameInfo {
 			game_key: string
@@ -211,10 +230,66 @@ declare global {
 				stat_winner: {
 					stat_id: string // number
 					winner_team_key?: string
-					is_tied?: number // 0 | 1
+					is_tied?: 0 | 1
 				}
 			}>
 		}
+
+		type TransactionInfo = {
+			transaction_key: string
+			transaction_id: string // number
+			type: 'add/drop' | 'add' | 'drop'
+			status: 'successful'
+			timestamp: string
+		}
+
+		type TransactionPlayers = {
+			players: Plural<{
+				player: [PlayerInfo, TransactionData]
+			}>
+		}
+
+		type TransactionData = {
+			transaction_data:
+				| TransactionAddData
+				| TransactionDropData
+				| Array<TransactionAddData | TransactionDropData>
+		}
+
+		type TransactionAddData = {
+			type: 'add'
+			source_type: 'teams' | 'freeagents'
+			destination_type: 'team' | 'waivers'
+			destination_team_key: string
+			destination_team_name: string
+		}
+
+		type TransactionDropData = {
+			type: 'drop'
+			source_type: 'teams' | 'freeagents'
+			source_team_key: string
+			source_team_name: string
+			destination_type: 'team' | 'waivers'
+		}
+
+		type Transaction = [TransactionInfo, TransactionPlayers]
+
+		type PlayerInfo = [
+			{ player_key: string },
+			{ player_id: string /* number */ },
+			{
+				name: {
+					full: string
+					first: string
+					last: string
+					ascii_first: string
+					ascii_last: string
+				}
+			},
+			{ editorial_team_abbr: string },
+			{ display_position: string },
+			{ position_type: 'B' | 'P' },
+		]
 	}
 }
 

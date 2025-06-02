@@ -1,4 +1,4 @@
-import { flatten, getPluralItems } from '@/lib/utils'
+import { cn, flatten, getPluralItems } from '@/lib/utils'
 import { getScoreboard } from '@/lib/yf'
 import DynamicProjections from './Projections.Dynamic'
 
@@ -6,7 +6,7 @@ export default async function Projections({
 	league,
 	team,
 }: {
-	league: YF.League
+	league: YF.LeagueInfo
 	team: { team: YF.Team }
 }) {
 	const t = flatten<YF.TeamInfo>(team.team[0])
@@ -58,7 +58,14 @@ export default async function Projections({
 				{projected_wins}-{projected_losses}-{projected_ties}
 			</td>
 
-			<td className="projected-pct tabular-nums">{projected_pct}</td>
+			<td
+				className={cn('projected-pct tabular-nums', {
+					'text-green-200': Number(projected_pct) > 0.5,
+					'text-red-200': Number(projected_pct) < 0.5,
+				})}
+			>
+				{projected_pct}
+			</td>
 
 			<DynamicProjections
 				rank={team.team[2].team_standings.rank}

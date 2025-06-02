@@ -4,10 +4,10 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
 	const token = JSON.parse(request.cookies.get('token')?.value ?? 'null')
 
-	const isTokenExpired =
+	if (
+		!token?.expires_at ||
 		new Date().getTime() >= new Date(token.expires_at).getTime()
-
-	if (token?.access_token && !isTokenExpired) {
+	) {
 		return NextResponse.next()
 	}
 

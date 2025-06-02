@@ -24,8 +24,8 @@ export function flatten<T extends Array<Record<string, any>>>(
 	}, {})
 }
 
-export function getPluralItems(obj: YF.Plural<any>) {
-	return Object.entries(obj)
+export function getPluralItems<T = any>(obj: YF.Plural<any>) {
+	return Object.entries<T>(obj)
 		.filter(([key]) => !isNaN(Number(key)))
 		.map(([, value]) => value)
 }

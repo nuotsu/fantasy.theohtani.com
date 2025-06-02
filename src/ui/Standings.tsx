@@ -1,15 +1,31 @@
 import { cn, flatten } from '@/lib/utils'
 import { getStandings } from '@/lib/yf'
+import { FaYahoo } from 'react-icons/fa6'
 import TeamLogo from './team/TeamLogo'
 import Projections from './Projections'
 
-export default async function Standings({ league }: { league: YF.League }) {
+export default async function Standings({ league }: { league: YF.LeagueInfo }) {
 	const standings = await getStandings(league.league_key)
 	const teams = Object.values(standings).filter((team: any) => isNaN(team))
 
 	return (
 		<article key={league.league_key}>
-			<h2 className="text-center font-bold">{league.name}</h2>
+			<header className="gap-ch p-ch flex flex-wrap items-center justify-between text-center">
+				<h2 className="gap-ch flex items-center font-bold">
+					<img
+						className="aspect-square size-8 shrink-0 object-cover"
+						src={league.logo_url}
+						alt={league.name}
+					/>
+
+					{league.name}
+				</h2>
+
+				<a className="action" href={league.url}>
+					<FaYahoo />
+					Open in Yahoo
+				</a>
+			</header>
 
 			<div className="overflow-x-auto pb-2">
 				<table className="w-full text-center whitespace-nowrap [&_:is(th,td)]:px-2">
@@ -74,7 +90,14 @@ export default async function Standings({ league }: { league: YF.League }) {
 										{wins}-{losses}-{ties}
 									</td>
 
-									<td className="tabular-nums">{percentage}</td>
+									<td
+										className={cn('tabular-nums', {
+											'text-green-200': Number(percentage) > 0.5,
+											'text-red-200': Number(percentage) < 0.5,
+										})}
+									>
+										{percentage}
+									</td>
 
 									<td className="tabular-nums">
 										{games_back !== '-' ? Number(games_back).toFixed(1) : '-'}

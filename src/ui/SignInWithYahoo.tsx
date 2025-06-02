@@ -9,10 +9,7 @@ SIGN_IN_URL.searchParams.set('response_type', 'code')
 
 export default function SignInWithYahoo() {
 	return (
-		<a
-			className="bg-yahoo-purple inline-flex items-center justify-center gap-2 px-2 py-1 text-white"
-			href={SIGN_IN_URL.toString()}
-		>
+		<a className="action" href={SIGN_IN_URL.toString()}>
 			<FaYahoo />
 			Sign in with Yahoo
 		</a>

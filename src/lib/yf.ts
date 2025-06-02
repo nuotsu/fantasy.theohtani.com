@@ -38,12 +38,17 @@ export async function getTeams(league_key: string) {
 	return data.fantasy_content.league[1].teams
 }
 
+export async function getTeam(team_key: string) {
+	const data = await yf<YF.TeamResponse>(`/team/${team_key}`)
+	return data.fantasy_content.team[0]
+}
+
 export async function getStandings(league_key: string) {
 	const data = await yf<YF.Standings>(`/league/${league_key}/standings`)
 	return data.fantasy_content.league[1].standings[0].teams
 }
 
-export async function getScoreboard(league: YF.League) {
+export async function getScoreboard(league: YF.LeagueInfo) {
 	const data = await yf<YF.Scoreboard>(
 		`/league/${league.league_key}/scoreboard`,
 	)
@@ -113,4 +118,20 @@ export async function getWeeklyStatWinners(
 				team_keys: winners.map((team) => team.team_key),
 			}
 		})
+}
+
+export async function getTransactions(
+	league_key: string,
+	{
+		count,
+	}: {
+		count: number
+	} = {
+		count: 10,
+	},
+) {
+	const data = await yf<YF.Transactions>(
+		`/league/${league_key}/transactions;count=${count}`,
+	)
+	return data.fantasy_content.league[1].transactions
 }
