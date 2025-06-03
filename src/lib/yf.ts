@@ -120,6 +120,11 @@ export async function getWeeklyStatWinners(
 		})
 }
 
+export async function getRoster(team_key: string) {
+	const data = await yf<YF.RosterResponse>(`/team/${team_key}/roster`)
+	return data.fantasy_content.team
+}
+
 export async function getTransactions(
 	league_key: string,
 	{

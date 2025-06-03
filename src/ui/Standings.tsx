@@ -69,7 +69,7 @@ export default async function Standings({ league }: { league: YF.LeagueInfo }) {
 								>
 									<td className="w-[2ch] text-center">{rank}</td>
 
-									<td className="sticky left-0 px-0! backdrop-blur-xs">
+									<td className="glass sticky left-0 px-0!">
 										<TeamLogo
 											className="mx-auto size-8 max-w-[initial]"
 											team={team.team[0]}
@@ -92,8 +92,10 @@ export default async function Standings({ league }: { league: YF.LeagueInfo }) {
 
 									<td
 										className={cn('tabular-nums', {
-											'text-green-200': Number(percentage) > 0.5,
-											'text-red-200': Number(percentage) < 0.5,
+											'text-green-500 dark:text-green-200':
+												Number(percentage) > 0.5,
+											'text-red-500 dark:text-red-200':
+												Number(percentage) < 0.5,
 										})}
 									>
 										{percentage}

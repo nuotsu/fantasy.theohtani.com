@@ -3,9 +3,9 @@ import { cn, flatten } from '@/lib/utils'
 export default function Move({
 	player: [player_info, { transaction_data }],
 }: {
-	player: [YF.PlayerInfo, YF.TransactionData]
+	player: [YF.TransactionPlayerInfo, YF.TransactionData]
 }) {
-	const info = flatten<YF.PlayerInfo>(player_info)
+	const info = flatten<YF.TransactionPlayerInfo>(player_info)
 
 	if (Array.isArray(transaction_data)) {
 		return transaction_data.map((item, key) => (
@@ -20,11 +20,11 @@ function Item({
 	player_info,
 	transaction_data: { type },
 }: {
-	player_info: YF.PlayerInfo
+	player_info: YF.TransactionPlayerInfo
 	transaction_data: YF.TransactionAddData | YF.TransactionDropData
 }) {
 	const { name, editorial_team_abbr, display_position } =
-		flatten<YF.PlayerInfo>(player_info)
+		flatten<YF.TransactionPlayerInfo>(player_info)
 
 	return (
 		<dl

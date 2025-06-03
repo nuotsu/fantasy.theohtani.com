@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
 
 	if (
 		!token?.expires_at ||
-		new Date().getTime() >= new Date(token.expires_at).getTime()
+		new Date().getTime() < new Date(token.expires_at).getTime()
 	) {
 		return NextResponse.next()
 	}

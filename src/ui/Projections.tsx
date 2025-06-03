@@ -60,8 +60,8 @@ export default async function Projections({
 
 			<td
 				className={cn('projected-pct tabular-nums', {
-					'text-green-200': Number(projected_pct) > 0.5,
-					'text-red-200': Number(projected_pct) < 0.5,
+					'text-green-500 dark:text-green-200': Number(projected_pct) > 0.5,
+					'text-red-500 dark:text-red-200': Number(projected_pct) < 0.5,
 				})}
 			>
 				{projected_pct}

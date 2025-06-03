@@ -23,6 +23,10 @@
 	* {
 		min-width: 0;
 	}
+
+	label {
+		cursor: pointer;
+	}
 }
 
 @utility technical {
@@ -46,4 +50,8 @@
 	&::-webkit-scrollbar {
 		display: none;
 	}
+}
+
+@utility glass {
+	@apply bg-bg/20 backdrop-blur-sm;
 }

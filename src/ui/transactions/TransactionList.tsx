@@ -32,7 +32,7 @@ export default async function TransactionList({
 		<section>
 			<h2 className="sr-only">Recent Transactions</h2>
 
-			<div className="gap-ch no-scrollbar grid snap-x snap-mandatory auto-cols-[18ch] grid-flow-col grid-rows-[auto_auto] overflow-x-auto overflow-y-clip">
+			<div className="gap-ch grid snap-x snap-mandatory auto-cols-[18ch] grid-flow-col grid-rows-[auto_auto] overflow-x-auto overflow-y-clip pb-2">
 				{Object.entries(groupByDate).map(([date, transactions], i) => (
 					<div className="contents" key={date}>
 						<h2 style={{ gridColumn: `span ${transactions.length}` }}>

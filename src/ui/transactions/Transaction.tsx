@@ -9,7 +9,7 @@ export default async function Transaction({
 	transaction: YF.Transaction
 }) {
 	const players = getPluralItems<{
-		player: [YF.PlayerInfo, YF.TransactionData]
+		player: [YF.TransactionPlayerInfo, YF.TransactionData]
 	}>(transaction[1].players).map(({ player }) => player)
 
 	const { transaction_data } =

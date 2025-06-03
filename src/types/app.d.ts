@@ -77,6 +77,10 @@ declare global {
 			]
 		}>
 
+		type RosterResponse = Response<{
+			team: [TeamInfo, Roster]
+		}>
+
 		type Transactions = Response<{
 			league: [
 				LeagueInfo,
@@ -235,6 +239,103 @@ declare global {
 			}>
 		}
 
+		type Roster = {
+			roster: {
+				'0': {
+					players: Plural<RosterPlayer>
+				}
+				coverage_type: 'date'
+				date: string // date
+				is_prescoring: 0 | 1
+				is_editable: 0 | 1
+				outs_pitched: {
+					coverage_type: string // 'week'
+					coverage_value: number
+					value: string // number
+				}
+			}
+		}
+
+		type RosterPlayer = {
+			player:
+				| [RosterPlayerInfo, RosterPlayerData]
+				| [RosterPlayerInfo, RosterPlayerData, { is_editable: 0 | 1 }]
+				| [
+						RosterPlayerInfo,
+						RosterPlayerData,
+						RosterPlayerStarting,
+						{ is_editable: 0 | 1 },
+				  ]
+		}
+
+		type RosterPlayerInfo = [
+			{ player_key: string },
+			{ player_id: string /* number */ },
+			{
+				name: {
+					full: string
+					first: string
+					last: string
+					ascii_first: string
+					ascii_last: string
+				}
+			},
+			{ url: string },
+			{ editorial_player_key: string },
+			{ editorial_team_key: string },
+			{ editorial_team_full_name: string },
+			{ editorial_team_abbr: string },
+			{ editorial_team_url: string },
+			{
+				is_keeper: {
+					status: boolean
+					cost: boolean
+					kept: boolean
+				}
+			},
+			{ uniform_number: string /* number */ },
+			{ display_position: string },
+			{
+				headshot: {
+					url: string
+					size: string
+				}
+				image_url: string
+			},
+			{ is_undroppable: '0' | '1' },
+			{ position_type: string },
+			{ primary_position: string },
+			{ eligible_positions: Array<{ position: string }> },
+			{ eligible_positions_to_add: [] },
+			[],
+			[],
+			{ has_player_notes: 0 | 1 },
+			[],
+			{ player_notes_last_timestamp: number },
+		]
+
+		type RosterPlayerData = {
+			selected_position: [
+				{
+					coverage_type: string // 'date'
+					date: string // date
+				},
+				{ position: string },
+				{ is_flex: 0 | 1 },
+			]
+		}
+
+		type RosterPlayerStarting = {
+			starting_status: [
+				{
+					coverage_type: string // 'date'
+					date: string // date
+				},
+				{ is_starting: 0 | 1 },
+			]
+			batting_order?: [{ order_num: string /* number */ }]
+		}
+
 		type TransactionInfo = {
 			transaction_key: string
 			transaction_id: string // number
@@ -245,7 +346,7 @@ declare global {
 
 		type TransactionPlayers = {
 			players: Plural<{
-				player: [PlayerInfo, TransactionData]
+				player: [TransactionPlayerInfo, TransactionData]
 			}>
 		}
 
@@ -274,7 +375,7 @@ declare global {
 
 		type Transaction = [TransactionInfo, TransactionPlayers]
 
-		type PlayerInfo = [
+		type TransactionPlayerInfo = [
 			{ player_key: string },
 			{ player_id: string /* number */ },
 			{

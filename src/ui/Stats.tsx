@@ -1,11 +1,12 @@
-import { cn, flatten, getPluralItems } from '@/lib/utils'
 import {
 	getScoreboard,
 	getStatCategories,
 	getWeeklyStatWinners,
 } from '@/lib/yf'
+import { cn, flatten, getPluralItems } from '@/lib/utils'
 import { Fragment } from 'react'
 import TeamLogo from './team/TeamLogo'
+import Roster from './roster/Roster'
 
 export default async function Stats({
 	game,
@@ -25,19 +26,18 @@ export default async function Stats({
 	].teams[0].team[1].team_stats.stats.map((stat) => stat.stat.stat_id)
 
 	const stat_categories = await getStatCategories(game)
-
 	const weekly_stat_winners = await getWeeklyStatWinners(matchups, stat_ids)
 
 	return (
-		<section className="overflow-x-auto pb-2">
-			<table className="w-full text-center whitespace-nowrap [&_:is(th,td)]:px-2 [&_td]:min-w-[6ch]">
-				<thead>
+		<section className="group/stats overflow-x-auto pb-2">
+			<table className="min-w-full table-fixed text-center whitespace-nowrap [&_td]:min-w-[6ch] group-has-[#show-roster:checked]/stats:[&_td]:min-w-[18ch]">
+				<thead className="[&_:is(th,td)]:px-2">
 					<tr>
 						<th rowSpan={2}>Week {scoreboard.week}</th>
 
 						{matchups.map((matchup: { matchup: YF.Matchup }, i) => (
 							<Fragment key={i}>
-								{getPluralItems(matchup.matchup['0'].teams).map(
+								{getPluralItems(matchup.matchup[0].teams).map(
 									({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, ii) => {
 										const t = flatten<YF.TeamInfo>(team[0])
 
@@ -72,7 +72,7 @@ export default async function Stats({
 					<tr>
 						{matchups.map((matchup: { matchup: YF.Matchup }, i) => (
 							<Fragment key={i}>
-								{getPluralItems(matchup.matchup['0'].teams).map(
+								{getPluralItems(matchup.matchup[0].teams).map(
 									({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, ii) => {
 										const t = flatten<YF.TeamInfo>(team[0])
 
@@ -102,7 +102,7 @@ export default async function Stats({
 					</tr>
 				</thead>
 
-				<tbody>
+				<tbody className="[&_:is(th,td)]:px-2">
 					{stat_ids.map((stat_id) => {
 						const stat = stat_categories
 							.map((c) => c.stat)
@@ -110,10 +110,7 @@ export default async function Stats({
 
 						return (
 							<tr className="tabular-nums" key={stat_id}>
-								<th
-									className="sticky left-0 z-1 backdrop-blur-xs"
-									data-stat-id={stat_id}
-								>
+								<th className="glass sticky left-0 z-1" data-stat-id={stat_id}>
 									{stat?.display_name}
 								</th>
 
@@ -166,6 +163,55 @@ export default async function Stats({
 						)
 					})}
 				</tbody>
+
+				<tfoot className="[&_td]:text-left">
+					<tr>
+						<th className="glass sticky left-0 z-1">
+							<label className="p-ch flex items-center justify-center gap-2">
+								<input id="show-roster" type="checkbox" />
+								Roster
+							</label>
+						</th>
+
+						{matchups.map((matchup: { matchup: YF.Matchup }, i) => (
+							<Fragment key={i}>
+								{getPluralItems(matchup.matchup[0].teams).map(({ team }) => {
+									const t = flatten<YF.TeamInfo>(team[0])
+
+									return (
+										<td
+											className="py-ch group-[&:not(:has(#show-roster:checked))]/stats:hidden"
+											key={t.team_id}
+										>
+											<TeamLogo className="mx-auto" team={team[0]} />
+										</td>
+									)
+								})}
+							</Fragment>
+						))}
+					</tr>
+
+					<tr className="*:align-top">
+						<th></th>
+
+						{matchups.map((matchup: { matchup: YF.Matchup }, i) => (
+							<Fragment key={i}>
+								{getPluralItems(matchup.matchup[0].teams).map(({ team }) => {
+									const t = flatten<YF.TeamInfo>(team[0])
+
+									return (
+										<td
+											className="border-x-[.5ch] border-transparent group-[&:not(:has(#show-roster:checked))]/stats:hidden"
+											key={t.team_id}
+										>
+											<Roster team_key={t.team_key} />
+										</td>
+									)
+								})}
+							</Fragment>
+						))}
+					</tr>
+				</tfoot>
 			</table>
 		</section>
 	)
