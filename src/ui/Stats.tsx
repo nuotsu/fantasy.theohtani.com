@@ -191,7 +191,7 @@ export default async function Stats({
 						))}
 					</tr>
 
-					<tr className="*:align-top">
+					<tr className="anim-fade-to-b *:align-top group-[&:not(:has(#show-roster:checked))]/stats:hidden">
 						<th></th>
 
 						{matchups.map((matchup: { matchup: YF.Matchup }, i) => (
@@ -201,7 +201,7 @@ export default async function Stats({
 
 									return (
 										<td
-											className="border-x-[.5ch] border-transparent group-[&:not(:has(#show-roster:checked))]/stats:hidden"
+											className="border-x-[.5ch] border-transparent"
 											key={t.team_id}
 										>
 											<Roster team_key={t.team_key} />
