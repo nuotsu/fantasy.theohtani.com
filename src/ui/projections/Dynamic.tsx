@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { VscDebugBreakpointFunction } from 'react-icons/vsc'
 import { useProjections } from './store'
+import WillRevalidate from '@/ui/WillRevalidate'
 
 export default function DynamicProjections({
 	rank,
@@ -64,13 +65,16 @@ export default function DynamicProjections({
 
 	return (
 		<>
-			<td className="tabular-nums">{gb ? gb.toFixed(1) : '-'}</td>
+			<td className="tabular-nums">
+				<WillRevalidate value={gb ? gb.toFixed(1) : '-'} />
+			</td>
 
 			<td
 				className="relative *:absolute *:top-1/2 *:right-0 *:-translate-y-1/2"
 				data-projected-rank={projected_rank}
 			>
-				{projected_rank || ''}
+				<WillRevalidate value={projected_rank || ''} />
+
 				{projected_rank < Number(rank) && (
 					<VscDebugBreakpointFunction className="text-green-400" />
 				)}

@@ -67,7 +67,7 @@ export default async function Projections({
 					'text-red-500 dark:text-red-200': Number(projected_pct) < 0.5,
 				})}
 			>
-				{projected_pct}
+				<WillRevalidate value={projected_pct} />
 			</td>
 
 			<DynamicProjections
