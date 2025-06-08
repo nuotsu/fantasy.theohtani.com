@@ -29,8 +29,8 @@ export default async function Stats({
 	const weekly_stat_winners = await getWeeklyStatWinners(matchups, stat_ids)
 
 	return (
-		<section className="group/stats overflow-x-auto pb-2">
-			<table className="min-w-full table-fixed text-center whitespace-nowrap [&_td]:min-w-[6ch] group-has-[#show-roster:checked]/stats:[&_td]:min-w-[18ch]">
+		<section className="group/stats isolate overflow-x-auto pb-2">
+			<table className="min-w-full table-fixed text-center whitespace-nowrap [&_td]:min-w-[6ch] group-has-[#show-roster:checked]/stats:[&_td]:min-w-[16ch]">
 				<thead className="[&_:is(th,td)]:px-2">
 					<tr>
 						<th rowSpan={2}>Week {scoreboard.week}</th>

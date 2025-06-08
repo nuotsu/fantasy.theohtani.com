@@ -27,7 +27,7 @@ export default async function Roster({ team_key }: { team_key: string }) {
 					<dl
 						className={cn(
 							css.player,
-							'grid grid-cols-[auto_1fr_auto] items-center gap-2 px-1',
+							'grid grid-cols-[1fr_auto] items-center gap-2 px-1',
 							{
 								'bg-green-400/15': s.is_starting,
 								'opacity-50': ['BN', 'IL'].includes(selected.position),
@@ -36,15 +36,9 @@ export default async function Roster({ team_key }: { team_key: string }) {
 						data-position={selected.position}
 						key={player_key}
 					>
-						<dt className="w-ch text-xs tabular-nums">
-							{!!s.is_starting && batting_order?.[0].order_num && (
-								<b className="text-green-400">{batting_order?.[0].order_num}</b>
-							)}
-						</dt>
+						<dt className="line-clamp-1 grow break-all">{name.full}</dt>
 
-						<dd className="line-clamp-1 break-all">{name.full}</dd>
-
-						<dd className="text-xs opacity-50">{selected.position}</dd>
+						<dd className="shrink-0 text-xs opacity-50">{selected.position}</dd>
 					</dl>
 				)
 			})}

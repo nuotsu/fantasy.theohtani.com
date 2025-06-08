@@ -10,6 +10,9 @@ export async function yf<T = any>(endpoint: string) {
 			headers: {
 				Authorization: `Bearer ${token.access_token}`,
 			},
+			next: {
+				tags: ['yf', endpoint],
+			},
 		},
 	)
 

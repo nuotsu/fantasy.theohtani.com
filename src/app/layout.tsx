@@ -21,7 +21,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" className="no-scrollbar">
 			<body className="bg-bg text-fg antialiased">
-				<main className="pt-ch flex min-h-svh flex-col pb-[max(env(safe-area-inset-bottom),1ch)]">
+				<main className="flex min-h-svh flex-col pb-[max(env(safe-area-inset-bottom),1ch)]">
 					{children}
 				</main>
 			</body>

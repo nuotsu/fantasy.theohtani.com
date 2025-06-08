@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { VscDebugBreakpointFunction } from 'react-icons/vsc'
+import { useProjections } from './store'
 
 export default function DynamicProjections({
 	rank,
@@ -14,6 +15,8 @@ export default function DynamicProjections({
 	losses: number
 	percentage: string
 }) {
+	const { revalidateDate } = useProjections()
+
 	const [all_projected_pct, setAllProjectedPct] = useState<number[]>([])
 	const [leader, setLeader] = useState<
 		Partial<{
@@ -31,7 +34,7 @@ export default function DynamicProjections({
 				.map((e) => Number(e.textContent))
 				.sort((a, b) => b - a),
 		)
-	}, [])
+	}, [revalidateDate])
 
 	useEffect(() => {
 		setLeader(
@@ -41,7 +44,7 @@ export default function DynamicProjections({
 				?.textContent?.match(/(?<wins>\d+)-(?<losses>\d+)-(?<ties>\d+)/)
 				?.groups ?? {},
 		)
-	}, [all_projected_pct])
+	}, [all_projected_pct, revalidateDate])
 
 	const projected_rank =
 		all_projected_pct.findIndex((value) => value === Number(percentage)) + 1

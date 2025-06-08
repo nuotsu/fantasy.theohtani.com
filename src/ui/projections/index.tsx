@@ -1,6 +1,6 @@
 import { cn, flatten, getPluralItems } from '@/lib/utils'
 import { getScoreboard } from '@/lib/yf'
-import DynamicProjections from './Projections.Dynamic'
+import DynamicProjections from './Dynamic'
 
 export default async function Projections({
 	league,
