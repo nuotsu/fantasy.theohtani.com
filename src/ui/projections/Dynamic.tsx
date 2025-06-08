@@ -69,18 +69,17 @@ export default function DynamicProjections({
 				<WillRevalidate value={gb ? gb.toFixed(1) : '-'} />
 			</td>
 
-			<td
-				className="relative *:absolute *:top-1/2 *:right-0 *:-translate-y-1/2"
-				data-projected-rank={projected_rank}
-			>
+			<td className="relative" data-projected-rank={projected_rank}>
 				<WillRevalidate value={projected_rank || ''} />
 
-				{projected_rank < Number(rank) && (
-					<VscDebugBreakpointFunction className="text-green-400" />
-				)}
-				{projected_rank > Number(rank) && (
-					<VscDebugBreakpointFunction className="rotate-180 text-red-400" />
-				)}
+				<div className="*:absolute *:top-1/2 *:right-0 *:-translate-y-1/2">
+					{projected_rank < Number(rank) && (
+						<VscDebugBreakpointFunction className="text-green-400" />
+					)}
+					{projected_rank > Number(rank) && (
+						<VscDebugBreakpointFunction className="rotate-180 text-red-400" />
+					)}
+				</div>
 			</td>
 		</>
 	)
