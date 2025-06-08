@@ -19,12 +19,22 @@ export default function Revalidate({
 		}
 	}, [isPending])
 
+	function handleClick() {
+		startTransition(revalidate)
+	}
+
+	useEffect(() => {
+		if (typeof window === 'undefined') return
+
+		window.addEventListener('keydown', (e) => {
+			if (e.key === 'r' && !isPending) handleClick()
+		})
+	}, [])
+
 	return (
 		<button
 			className="action-base text-sm"
-			onClick={() => {
-				startTransition(revalidate)
-			}}
+			onClick={handleClick}
 			disabled={isPending}
 		>
 			<VscRefresh className={cn(isPending && 'animate-spin')} />

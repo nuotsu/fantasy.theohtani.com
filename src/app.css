@@ -93,3 +93,23 @@
 		translate: var(--x, 0) var(--y, 0);
 	}
 }
+
+@utility will-revalidate {
+	color: inherit !important;
+	opacity: 1 !important;
+}
+
+@utility animate-revalidated {
+	animation: revalidated 4s ease-in-out forwards;
+}
+
+@keyframes revalidated {
+	0% {
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 1;
+		color: var(--color-amber-500);
+	}
+}

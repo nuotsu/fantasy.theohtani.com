@@ -11,7 +11,7 @@ export default async function Roster({ team_key }: { team_key: string }) {
 		<article>
 			{players.map(({ player: [playerInfo, playerData, ...rest] }) => {
 				const { player_key, name } = flatten<YF.RosterPlayerInfo>(playerInfo)
-				const { starting_status, batting_order } = flatten(
+				const { starting_status } = flatten(
 					rest,
 				) as Partial<YF.RosterPlayerStarting>
 

@@ -6,6 +6,7 @@ import {
 import { cn, flatten, getPluralItems } from '@/lib/utils'
 import { Fragment } from 'react'
 import TeamLogo from './team/TeamLogo'
+import WillRevalidate from './WillRevalidate'
 import Roster from './roster/Roster'
 
 export default async function Stats({
@@ -75,6 +76,7 @@ export default async function Stats({
 								{getPluralItems(matchup.matchup[0].teams).map(
 									({ team }: { team: [YF.TeamInfo, YF.TeamStats] }, ii) => {
 										const t = flatten<YF.TeamInfo>(team[0])
+										const total = team[1].team_points.total
 
 										return (
 											<td
@@ -91,7 +93,7 @@ export default async function Stats({
 												)}
 
 												<big className="font-bold">
-													{team[1].team_points.total}
+													<WillRevalidate value={total} />
 												</big>
 											</td>
 										)
@@ -147,11 +149,13 @@ export default async function Stats({
 															})}
 															key={ii}
 														>
-															{
-																team[1].team_stats.stats.find(
-																	(stat) => stat.stat.stat_id === stat_id,
-																)?.stat.value
-															}
+															<WillRevalidate
+																value={
+																	team[1].team_stats.stats.find(
+																		(stat) => stat.stat.stat_id === stat_id,
+																	)?.stat.value
+																}
+															/>
 														</td>
 													)
 												},

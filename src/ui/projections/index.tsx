@@ -1,6 +1,7 @@
 import { cn, flatten, getPluralItems } from '@/lib/utils'
 import { getScoreboard } from '@/lib/yf'
 import DynamicProjections from './Dynamic'
+import WillRevalidate from '@/ui/WillRevalidate'
 
 export default async function Projections({
 	league,
@@ -55,7 +56,9 @@ export default async function Projections({
 	return (
 		<>
 			<td className="project-wlt border-l border-dashed tabular-nums">
-				{projected_wins}-{projected_losses}-{projected_ties}
+				<WillRevalidate value={projected_wins} />-
+				<WillRevalidate value={projected_losses} />-
+				<WillRevalidate value={projected_ties} />
 			</td>
 
 			<td
