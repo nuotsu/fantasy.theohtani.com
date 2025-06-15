@@ -1,5 +1,0 @@
-.player:is([data-position='P'], [data-position='SP'], [data-position='RP']) {
-	&:not(& ~ &) {
-		border-top: 1px dashed;
-	}
-}
