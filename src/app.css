@@ -46,7 +46,7 @@
 }
 
 @utility action {
-	@apply action-base bg-yahoo-purple text-white transition-[filter] hover:brightness-110;
+	@apply action-base bg-yahoo-purple text-white transition-[scale,filter] hover:scale-105 hover:brightness-110;
 }
 
 @utility no-scrollbar {

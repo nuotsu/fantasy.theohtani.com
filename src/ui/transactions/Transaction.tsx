@@ -43,6 +43,7 @@ export default async function Transaction({
 						hour: 'numeric',
 						minute: '2-digit',
 						hour12: true,
+						timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 					})
 						.format(timestamp)
 						.replace(',', '')}

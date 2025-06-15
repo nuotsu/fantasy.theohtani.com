@@ -31,6 +31,11 @@ export default function Revalidate({
 		})
 	}, [])
 
+	useEffect(() => {
+		const interval = setInterval(handleClick, 1000 * 30 /* seconds */)
+		return () => clearInterval(interval)
+	}, [])
+
 	return (
 		<button
 			className="action-base text-sm"
