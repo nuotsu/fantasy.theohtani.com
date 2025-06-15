@@ -8,8 +8,8 @@ const font_sans = Geist({
 })
 
 export const metadata: Metadata = {
-	title: 'Fantasy Baseball',
-	description: 'Fantasy Baseball',
+	title: 'Yahoo Fantasy',
+	description: 'Yahoo Fantasy',
 	icons: 'https://fav.farm/🏆',
 }
 
