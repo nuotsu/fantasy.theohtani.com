@@ -1,6 +1,5 @@
 import { getRoster } from '@/lib/yf'
 import { getPluralItems } from '@/lib/utils'
-import css from './Roster.module.css'
 import Player from './Player'
 
 export default async function Roster({ team_key }: { team_key: string }) {

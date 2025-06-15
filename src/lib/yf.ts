@@ -128,6 +128,11 @@ export async function getRoster(team_key: string) {
 	return data.fantasy_content.team
 }
 
+export async function getPlayer(player_key: string) {
+	const data = await yf<YF.PlayerResponse>(`/player/${player_key}`)
+	return data.fantasy_content
+}
+
 export async function getTransactions(
 	league_key: string,
 	{

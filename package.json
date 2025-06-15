@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
+		"dev:https": "next dev --experimental-https",
 		"dev:turbopack": "next dev --turbopack",
 		"lt": "lt --port 3000 --subdomain=fantasy-theohtani",
 		"build": "next build",

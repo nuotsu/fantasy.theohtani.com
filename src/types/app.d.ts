@@ -77,6 +77,10 @@ declare global {
 			]
 		}>
 
+		type PlayerResponse = Response<{
+			player: [PlayerInfo]
+		}>
+
 		type RosterResponse = Response<{
 			team: [TeamInfo, Roster]
 		}>
@@ -239,36 +243,7 @@ declare global {
 			}>
 		}
 
-		type Roster = {
-			roster: {
-				'0': {
-					players: Plural<RosterPlayer>
-				}
-				coverage_type: 'date'
-				date: string // date
-				is_prescoring: 0 | 1
-				is_editable: 0 | 1
-				outs_pitched: {
-					coverage_type: string // 'week'
-					coverage_value: number
-					value: string // number
-				}
-			}
-		}
-
-		type RosterPlayer = {
-			player:
-				| [RosterPlayerInfo, RosterPlayerData]
-				| [RosterPlayerInfo, RosterPlayerData, { is_editable: 0 | 1 }]
-				| [
-						RosterPlayerInfo,
-						RosterPlayerData,
-						RosterPlayerStarting,
-						{ is_editable: 0 | 1 },
-				  ]
-		}
-
-		type RosterPlayerInfo = [
+		type PlayerInfo = [
 			{ player_key: string },
 			{ player_id: string /* number */ },
 			{
@@ -281,6 +256,8 @@ declare global {
 				}
 			},
 			{ url: string },
+			{ status: string; status_full: string } | [],
+			{ on_disabled_list: 0 | 1 } | [],
 			{ editorial_player_key: string },
 			{ editorial_team_key: string },
 			{ editorial_team_full_name: string },
@@ -313,6 +290,35 @@ declare global {
 			[],
 			{ player_notes_last_timestamp: number },
 		]
+
+		type Roster = {
+			roster: {
+				'0': {
+					players: Plural<RosterPlayer>
+				}
+				coverage_type: 'date'
+				date: string // date
+				is_prescoring: 0 | 1
+				is_editable: 0 | 1
+				outs_pitched: {
+					coverage_type: string // 'week'
+					coverage_value: number
+					value: string // number
+				}
+			}
+		}
+
+		type RosterPlayer = {
+			player:
+				| [PlayerInfo, RosterPlayerData]
+				| [PlayerInfo, RosterPlayerData, { is_editable: 0 | 1 }]
+				| [
+						PlayerInfo,
+						RosterPlayerData,
+						RosterPlayerStarting,
+						{ is_editable: 0 | 1 },
+				  ]
+		}
 
 		type RosterPlayerData = {
 			selected_position: [
