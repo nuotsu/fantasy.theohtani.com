@@ -3,9 +3,8 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
+		"dev": "next dev --experimental-https",
 		"dev:turbopack": "next dev --turbopack",
-		"lt": "lt --port 3000 --subdomain=fantasy-theohtani",
 		"build": "next build",
 		"start": "next start",
 		"typecheck": "tsc --noEmit"
@@ -13,17 +12,16 @@
 	"dependencies": {
 		"@vercel/analytics": "^1.5.0",
 		"clsx": "^2.1.1",
-		"localtunnel": "^2.0.2",
 		"next": "15.3.3",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
 		"react-icons": "^5.5.0",
-		"tailwind-merge": "^3.3.0",
+		"tailwind-merge": "^3.3.1",
 		"zustand": "^5.0.5"
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4",
-		"@types/node": "^22",
+		"@types/node": "^24",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"prettier": "^3.5.3",
