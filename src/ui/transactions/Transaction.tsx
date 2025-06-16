@@ -29,6 +29,9 @@ export default async function Transaction({
 	const team = await getTeam(team_key)
 
 	const timestamp = new Date(Number(transaction[0].timestamp) * 1000)
+	const timestamp_fixed = new Date(
+		timestamp.toISOString().split('Z')[0] + 'Z',
+	).getTime()
 
 	return (
 		<li className="scroll-ml-ch row-start-2 snap-start">
@@ -43,9 +46,8 @@ export default async function Transaction({
 						hour: 'numeric',
 						minute: '2-digit',
 						hour12: true,
-						timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 					})
-						.format(timestamp)
+						.format(timestamp_fixed)
 						.replace(',', '')}
 				</time>
 			</header>
