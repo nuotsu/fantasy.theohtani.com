@@ -29,11 +29,6 @@ export default async function Transaction({
 	const team = await getTeam(team_key)
 
 	const timestamp = new Date(Number(transaction[0].timestamp) * 1000)
-	console.log(
-		transaction[0].timestamp,
-		timestamp,
-		Intl.DateTimeFormat().resolvedOptions().timeZone,
-	)
 
 	return (
 		<li className="scroll-ml-ch row-start-2 snap-start">
