@@ -75,19 +75,21 @@ export default async function Standings({ league }: { league: YF.LeagueInfo }) {
 
 								return (
 									<tr
-										className={cn(t.is_owned_by_current_login && 'font-bold')}
+										className={cn(
+											t.is_owned_by_current_login && 'bg-fg/15 font-bold',
+										)}
 										key={t.team_key}
 									>
 										<td className="w-[2ch] text-center">{rank}</td>
 
-										<td className="glass sticky left-0 px-0!">
+										<td className="glass sticky left-0 w-8 px-0!">
 											<TeamLogo
-												className="mx-auto size-8 max-w-[initial]"
+												className="mx-auto max-w-[initial]"
 												team={team.team[0]}
 											/>
 										</td>
 
-										<td className="text-left">{t.name}</td>
+										<td className="pl-4! text-left">{t.name}</td>
 
 										<td>
 											{t.managers

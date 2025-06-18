@@ -1,0 +1,6 @@
+# TODO
+
+- head-to-head season stats
+  ```sh
+  GET https://fantasysports.yahooapis.com/fantasy/v2/league/{league_key}/teams/stats;type=season;categories=R,HR,RBI,SB,AVG
+  ```

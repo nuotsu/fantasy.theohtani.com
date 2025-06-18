@@ -62,6 +62,16 @@
 	@apply bg-bg/20 backdrop-blur-sm;
 }
 
+@utility overflow-fade-r {
+	--offset: 2rem;
+	mask: linear-gradient(
+		to right,
+		black 50%,
+		black calc(100% - var(--offset)),
+		transparent
+	);
+}
+
 /* animations */
 
 @utility anim-fade {

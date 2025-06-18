@@ -32,7 +32,7 @@ export default async function Player({
 			key={player_key}
 		>
 			<dt
-				className={cn('line-clamp-1 grow break-all', {
+				className={cn('overflow-hidden text-ellipsis', {
 					'text-red-600 dark:text-red-400':
 						status &&
 						['60-Day Injured List', 'Not Active'].includes(status_full),
@@ -41,7 +41,9 @@ export default async function Player({
 				{name.full}
 			</dt>
 
-			<dd className="shrink-0 text-xs opacity-50">{selected.position}</dd>
+			<dd className="shrink-0 text-xs tabular-nums opacity-50">
+				{selected.position}
+			</dd>
 		</dl>
 	)
 }
